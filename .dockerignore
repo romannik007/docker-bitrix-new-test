@@ -1,0 +1,8 @@
+volumes/www
+volumes/mysql
+volumes
+services/push/logs
+services/web/logs
+rebuild*
+.git
+docker-bitrix-new

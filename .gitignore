@@ -1,0 +1,14 @@
+!/volumes/.gitkeep
+/volumes/www/**
+!/volumes/www/.gitkeep
+/volumes/mysql/**
+!/volumes/mysql/.gitkeep
+/services/push/logs/**
+!/services/push/logs/.gitkeep
+/services/web/logs/**
+!/services/web/logs/.gitkeep
+
+tmp.Dockerfile
+.git
+volumes/www/bitrix/managed_cache
+.vscode/
