@@ -28,10 +28,10 @@ services:
         dockerfile: dockerfile
      
       hostname: web
-      ports:
-        - 80:80
-        - 8893-8895:8893-8895/tcp
-        - 443:443
+      #ports:
+        #- 80:80
+        #- 8893-8895:8893-8895/tcp
+        #- 443:443
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4
@@ -42,12 +42,29 @@ services:
         - ./volumes/www/:/var/www/html/bx-site/
         - ./services/web/logs/crond:/var/log/crond
         - ./services/web/logs/httpd:/var/log/httpd
-        - ./services/web/logs/nginx:/var/log/nginx
         - ./services/web/logs/php:/var/log/php
         - ./services/web/logs/supervisor:/var/log/supervisor
         - ./services/web/cron/bitrix:/etc/cron.d/bitrix
       #command: ["/root/entry-web.sh"]
       entrypoint: [ "/entrypoint.sh" ]
+    
+    nginx:
+      build:
+        context: ./services/web/nginx
+      ports:
+        - 80:80
+        - 443:443
+        - 8893-8895:8893-8895
+      networks:
+        - bitrix
+  #          ipv4_address: 172.16.16.4
+      depends_on:
+        - web
+      volumes:
+        - ./services/web/logs/nginx:/var/log/nginx
+        - ./volumes/www/:/var/www/html/bx-site/
+      #entrypoint: [ "/entrypoint.sh" ]
+      
 
     redis:
       build: 

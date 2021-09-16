@@ -21,8 +21,6 @@ usermod bitrix -G root
 
 mkdir -p /var/log/supervisor
 mkdir -p /var/log/push-server
-useradd bitrix -u 600 -g 600
-usermod bitrix -G root
 
 
 #блок для установки запускаиз исзходников

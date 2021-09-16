@@ -72,7 +72,7 @@ return array (
           'path_to_mobile_listener_secure' => 'https://#DOMAIN#:8894/bitrix/sub/',
           'path_to_websocket' => 'ws://#DOMAIN#/bitrix/subws/',
           'path_to_websocket_secure' => 'wss://#DOMAIN#/bitrix/subws/',
-          'path_to_publish' => 'http://127.0.0.1:8895/bitrix/pub/',
+          'path_to_publish' => 'http://nginx:8895/bitrix/pub/',
           'nginx_version' => '3',
           'nginx_command_per_hit' => '100',
           'nginx' => 'Y',

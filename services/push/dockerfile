@@ -18,5 +18,9 @@ FROM centos:7
   COPY push-server-multi /etc/sysconfig/push-server-multi
   COPY ./entrypoint.sh / 
   RUN chmod +x /entrypoint.sh
+  EXPOSE 8010-8015
+  EXPOSE 9010-9011
+  #EXPOSE 8895
+  #EXPOSE 80
   
 

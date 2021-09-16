@@ -20,7 +20,6 @@ FROM centos:7
      #RUN echo "127.0.0.1 web" >> /etc/hosts
      RUN ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
      #RUN groupadd apache && useradd -M nginx -g apache
-     COPY ./nginx/config/ /etc/nginx
      COPY ./httpd/config/ /etc/httpd
      COPY ./php.d/config/ /etc/php.d
      COPY ./cron/ /etc/cron.d
@@ -30,7 +29,8 @@ FROM centos:7
      
      RUN chmod +x /entrypoint.sh
    
-     EXPOSE 80
-     EXPOSE 443
+     #EXPOSE 80
+     #EXPOSE 443
+     EXPOSE 8090
 
      
