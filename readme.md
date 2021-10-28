@@ -122,8 +122,8 @@ setcookie("PHPSESSID", "", 777, '/');
 **Дополнительно**:
 - в файле .env содержатся данные для подключения к mysql,
   логин и пароль пользователя bitrix из env используем только при чистой установке битрикс
-- в папках **volumes/web/httpd, volumes/nginx, volumes/php** содержатся файлы для кастомных настроек
-- логи apache, nginx и cron в папке **volumes/<сервис>/logs**
+- в папках **services/web/httpd, services/web/nginx, services/web/php** содержатся файлы для кастомных настроек
+- логи apache, nginx и cron в папке **services/<сервис>/logs**
 - адрес сервера БД - **mysql** (указываем для подключения)
 - commit_push - для создания образа из контейнера с установленной средой и push в нужный реестр
 - ***`docker-compose up -d --build --force-recreate`***  - запуск только первый раз, далее уже запускаем *docker-compose up -d* или ***`docker-compose start`*** (вэбка доступна по порту 80 или 443, mysql - 3306)
