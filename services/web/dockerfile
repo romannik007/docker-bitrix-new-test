@@ -14,8 +14,9 @@ FROM centos:7
           php-pecl-apcu-bc php-pecl-geoip \
           php-pecl-mcrypt php-pecl-memcache  \
           php-pecl-ssh2 php-process php-pspell php-xml php-zipstream \
+          php-zip \
           nginx crontabs mc
-     RUN yum install -y epel-release supervisor && yum install -y supervisor php-pecl-redis5 gd-devel httpd-mod_session net-tools
+     RUN yum install -y epel-release supervisor && yum install -y supervisor php-pecl-redis gd-devel httpd-mod_session net-tools
      RUN yum clean all
      #RUN echo "127.0.0.1 web" >> /etc/hosts
      RUN ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
