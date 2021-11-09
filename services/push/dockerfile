@@ -16,6 +16,7 @@ FROM centos:7
   RUN ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
   RUN yum clean all
   COPY push-server-multi /etc/sysconfig/push-server-multi
+  COPY ./supervisor/ /etc/supervisord.d
   COPY ./entrypoint.sh / 
   RUN chmod +x /entrypoint.sh
   EXPOSE 8010-8015

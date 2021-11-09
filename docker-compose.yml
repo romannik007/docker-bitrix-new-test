@@ -84,7 +84,7 @@ services:
         - redis-sock:/tmp/
         #- ./services/tmp/:/tmp/
         - ./services/push/logs:/var/log/
-        - ./services/supervisor/push:/etc/supervisord.d
+        - ./services/push/supervisor:/etc/supervisord.d
       ports:
         - 8010-8015:8010-8015/tcp
         - 9010-9011:9010-9011/tcp
