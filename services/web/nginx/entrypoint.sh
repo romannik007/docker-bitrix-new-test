@@ -9,4 +9,5 @@ chmod -R 777 /home/bitrix/.bx_temp/sitemanager
 #chmod -R 777 /var/lib/php/session
 #mkdir -p /tmp/php_upload
 #chmod -R 777 /tmp/php_upload
-exec nginx -g "daemon off;"
+#exec nginx -g "daemon off;"
+ /docker-entrypoint.sh

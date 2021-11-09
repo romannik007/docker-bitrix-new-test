@@ -135,4 +135,13 @@ setcookie("PHPSESSID", "", 777, '/');
 
 - ***`docker-compose up -d --build`***  - запуск только первый раз или при изменении конфигов сервисов, далее уже запускаем *docker-compose up -d* или ***`docker-compose start`*** (вэбка доступна по порту 80 или 443, mysql - 3306)
 - ***`docker exec -ti <сервис> /bin/bash`*** - подключиться к контенеру в баш )
+- 
+Setting boundaries for WSL2
+We need to set some reasonable resource constraints on what WSL2 can actually use. Fortunately, that’s as simple as going to c:\users\*your your profile name* and creating a .wslconfig file. On my setup, a MSI Prestige 15 with a 10710u 6-core processor and 16GB of RAM, mine looks like this:
+
+```
+[wsl2]
+memory=4GB # Limits VM memory in WSL 2 to 4 GB
+processors=5 # Makes the WSL 2 VM use two virtual processors
+```
 
