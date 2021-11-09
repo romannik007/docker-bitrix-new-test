@@ -54,8 +54,8 @@ services:
         context: ./services/web/nginx
       ports:
         - 80:80
-        - 443:443
-        - 8893-8895:8893-8895
+        #- 443:443
+        #- 8893-8895:8893-8895
       networks:
         - bitrix
   #          ipv4_address: 172.16.16.4
@@ -87,9 +87,9 @@ services:
         #- ./services/tmp/:/tmp/
         - ./services/push/logs:/var/log/
         - ./services/push/supervisor:/etc/supervisord.d
-      ports:
-        - 8010-8015:8010-8015/tcp
-        - 9010-9011:9010-9011/tcp
+      #ports:
+        #- 8010-8015:8010-8015/tcp
+        #- 9010-9011:9010-9011/tcp
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4
@@ -97,10 +97,25 @@ services:
         - redis
       entrypoint:  [ "/entrypoint.sh" ]
 
-volumes: 
-  redis-sock:     
-  mysql-data:
+#volumes: 
+  #redis-sock:     
+  #mysql-data:
+  #bitrix-www:
+
+volumes:
+  redis-sock:
   bitrix-www:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: 'd:/volumes/bitrix-www'
+  mysql-data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: 'd:/volumes/mysql-data'
 
     
 
