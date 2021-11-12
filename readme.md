@@ -38,7 +38,7 @@
             user2:400:65536 
             
    
-   **Также необходимо выполнить**
+   **При ошибке установки пакетов необходимо выполнить**
    https://sylabs.io/guides/3.8/admin-guide/user_namespace.html#user-namespace-requirements
 
 Debian   
@@ -111,11 +111,18 @@ setcookie("PHPSESSID", "", 777, '/');
 
 13. в файле .settings.php в проекте прописываем данные для соединения с БД и ключ вставляем такой: 
 
-      *'signature_key' => 'bVQdNsrRsulOnj9lkI0sPim292jMtrnji0zzEl5MzCBeHT7w1E5HL3aihFb6aiFJfNEIDxmcFrowS3PTLZFDxAfuNNuCN5EcFRaveaUaRZHSThtWKV7Vp5vGbz9kb3cN'*
+      ***'signature_key' => 'bVQdNsrRsulOnj9lkI0sPim292jMtrnji0zzEl5MzCBeHT7w1E5HL3aihFb6aiFJfNEIDxmcFrowS3PTLZFDxAfuNNuCN5EcFRaveaUaRZHSThtWKV7Vp5vGbz9kb3cN'***
 
-      пример .settings.php в папке volumes/bitrix-set/
+      ***'path_to_publish' => 'http://nginx:8895/bitrix/pub/'***
+
+      пример .settings.php в папке services/bitrix-set/
 
       **Если push&pull не работает, необходимо пересохранить настройки в модуле push&pull выбрав 2 пункт  и потом 4-й**
+      **для прохождения теста с сокетами в /etc/hosts прописать**
+
+      ***<IP сетевой карты> <домен>***
+
+     **далее заходить по домену**
 
 
 
@@ -125,7 +132,16 @@ setcookie("PHPSESSID", "", 777, '/');
 - в папках **services/web/httpd, services/web/nginx, services/web/php** содержатся файлы для кастомных настроек
 - логи apache, nginx и cron в папке **services/<сервис>/logs**
 - адрес сервера БД - **mysql** (указываем для подключения)
-- commit_push - для создания образа из контейнера с установленной средой и push в нужный реестр
-- ***`docker-compose up -d --build --force-recreate`***  - запуск только первый раз, далее уже запускаем *docker-compose up -d* или ***`docker-compose start`*** (вэбка доступна по порту 80 или 443, mysql - 3306)
+
+- ***`docker-compose up -d --build`***  - запуск только первый раз или при изменении конфигов сервисов, далее уже запускаем *docker-compose up -d* или ***`docker-compose start`*** (вэбка доступна по порту 80 или 443, mysql - 3306)
 - ***`docker exec -ti <сервис> /bin/bash`*** - подключиться к контенеру в баш )
+- 
+Setting boundaries for WSL2
+We need to set some reasonable resource constraints on what WSL2 can actually use. Fortunately, that’s as simple as going to c:\users\*your your profile name* and creating a .wslconfig file. On my setup, a MSI Prestige 15 with a 10710u 6-core processor and 16GB of RAM, mine looks like this:
+
+```
+[wsl2]
+memory=4GB # Limits VM memory in WSL 2 to 4 GB
+processors=5 # Makes the WSL 2 VM use two virtual processors
+```
 

@@ -19,7 +19,7 @@ services:
         MYSQL_USER: bitrix
         MYSQL_PASSWORD: ${BX_MYSQL_BITRIX_PASS}
       volumes:
-        - ./volumes/mysql/:/var/lib/mysql
+        - mysql-data:/var/lib/mysql
       command: ['--innodb_strict_mode=OFF','--character-set-server=utf8', '--collation-server=utf8_unicode_ci', '--skip-character-set-client-handshake', '--sql-mode=']
 
     web:
@@ -39,12 +39,13 @@ services:
         - mysql
         - push
       volumes:
-        - ./volumes/www/:/var/www/html/bx-site/
+        - bitrix-www:/var/www/html/bx-site/
         - ./services/web/logs/crond:/var/log/crond
         - ./services/web/logs/httpd:/var/log/httpd
         - ./services/web/logs/php:/var/log/php
         - ./services/web/logs/supervisor:/var/log/supervisor
         - ./services/web/cron/bitrix:/etc/cron.d/bitrix
+        - ./volumes/www/bitrixsetup.php:/var/www/html/bx-site/bitrixsetup.php
       #command: ["/root/entry-web.sh"]
       entrypoint: [ "/entrypoint.sh" ]
     
@@ -53,8 +54,8 @@ services:
         context: ./services/web/nginx
       ports:
         - 80:80
-        - 443:443
-        - 8893-8895:8893-8895
+        #- 443:443
+        #- 8893-8895:8893-8895
       networks:
         - bitrix
   #          ipv4_address: 172.16.16.4
@@ -62,7 +63,8 @@ services:
         - web
       volumes:
         - ./services/web/logs/nginx:/var/log/nginx
-        - ./volumes/www/:/var/www/html/bx-site/
+        #- ./volumes/www/bitrixsetup.php:/var/www/html/bx-site/bitrixsetup.php
+        - bitrix-www:/var/www/html/bx-site/
       #entrypoint: [ "/entrypoint.sh" ]
       
 
@@ -85,9 +87,9 @@ services:
         #- ./services/tmp/:/tmp/
         - ./services/push/logs:/var/log/
         - ./services/push/supervisor:/etc/supervisord.d
-      ports:
-        - 8010-8015:8010-8015/tcp
-        - 9010-9011:9010-9011/tcp
+      #ports:
+        #- 8010-8015:8010-8015/tcp
+        #- 9010-9011:9010-9011/tcp
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4
@@ -95,8 +97,26 @@ services:
         - redis
       entrypoint:  [ "/entrypoint.sh" ]
 
-volumes: 
-  redis-sock:      
+#volumes: 
+  #redis-sock:     
+  #mysql-data:
+  #bitrix-www:
+
+volumes:
+  redis-sock:
+  bitrix-www:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: 'd:/volumes/bitrix-www'
+  mysql-data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: 'd:/volumes/mysql-data'
+
     
 
 networks:
