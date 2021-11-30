@@ -19,9 +19,8 @@ services:
         MYSQL_USER: bitrix
         MYSQL_PASSWORD: ${BX_MYSQL_BITRIX_PASS}
       volumes:
-        - ./volumes/mysql:/var/lib/mysql
-      command: ['--innodb_strict_mode=OFF','--character-set-server=utf8', '--collation-server=utf8_unicode_ci',
-         '--skip-character-set-client-handshake', '--sql-mode=']
+        - ./volumes/mysql/:/var/lib/mysql
+      command: ['--innodb_strict_mode=OFF','--character-set-server=utf8', '--collation-server=utf8_unicode_ci', '--skip-character-set-client-handshake', '--sql-mode=']
 
     web:
       build:
@@ -47,8 +46,6 @@ services:
         - ./services/web/logs/supervisor:/var/log/supervisor
         - ./services/web/cron/bitrix:/etc/cron.d/bitrix
       #command: ["/root/entry-web.sh"]
-      environment:
-        USER_ID: $USER_ID
       entrypoint: [ "/entrypoint.sh" ]
     
     nginx:
@@ -83,13 +80,11 @@ services:
         context: ./services/push
         dockerfile: dockerfile
       hostname: push
-      environment:
-        USER_ID: $USER_ID
       volumes:
         - redis-sock:/tmp/
         #- ./services/tmp/:/tmp/
         - ./services/push/logs:/var/log/
-        - ./services/push/supervisor/supervisord.ini:/etc/supervisord.d/supervisord.ini
+        - ./services/push/supervisor:/etc/supervisord.d
       ports:
         - 8010-8015:8010-8015/tcp
         - 9010-9011:9010-9011/tcp

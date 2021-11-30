@@ -1,7 +1,7 @@
 #!/bin/bash
 
 groupadd bitrix -g 600
-useradd bitrix -u $USER_ID -g 600
+useradd bitrix -u 600 -g 600
 usermod bitrix -G root
 
 rm -f /var/run/*.pid

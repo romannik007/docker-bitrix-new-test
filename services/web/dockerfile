@@ -1,14 +1,12 @@
 FROM centos:7
-     RUN yum update -y && \
-          rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-          rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
-          yum-config-manager --enable remi-php74 && \
-          yum install -y epel-release && \
-          yum update -y && \
-          yum -y install yum-utils \
-          httpd \
-          supervisor \
-          php php-cli php-common \
+     RUN yum update -y
+     RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+     RUN rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+     RUN yum -y install yum-utils
+     RUN yum-config-manager --enable remi-php74
+     
+     RUN yum install -y httpd 
+     RUN yum -y install php php-cli php-common \
           php-devel php-fedora-autoloader php-gd \
           php-imap php-json php-ldap php-mbstring \
           php-mysqlnd php-opcache php-pdo \
@@ -17,10 +15,11 @@ FROM centos:7
           php-pecl-mcrypt php-pecl-memcache  \
           php-pecl-ssh2 php-process php-pspell php-xml php-zipstream \
           php-zip \
-          nginx crontabs mc \
-          php-pecl-redis gd-devel httpd-mod_session net-tools && \
-          yum clean all && \
-          ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+          nginx crontabs mc
+     RUN yum install -y epel-release supervisor && yum install -y supervisor php-pecl-redis gd-devel httpd-mod_session net-tools
+     RUN yum clean all
+     #RUN echo "127.0.0.1 web" >> /etc/hosts
+     RUN ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
      #RUN groupadd apache && useradd -M nginx -g apache
      COPY ./httpd/config/ /etc/httpd
      COPY ./php.d/config/ /etc/php.d

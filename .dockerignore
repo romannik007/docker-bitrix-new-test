@@ -1,6 +1,8 @@
+volumes/www
+volumes/mysql
 volumes
-volumes
-volumes
-**/logs
+services/push/logs
+services/web/logs
+rebuild*
 .git
 docker-bitrix-new
