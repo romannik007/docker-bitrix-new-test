@@ -10,4 +10,8 @@
 
 tmp.Dockerfile
 .git
+<<<<<<< HEAD
 volumes/www/bitrix/managed_cache
+=======
+
+>>>>>>> test

@@ -1,7 +1,11 @@
 #!/bin/bash
 
 groupadd bitrix -g 600
+<<<<<<< HEAD
 useradd bitrix -u 600 -g 600
+=======
+useradd bitrix -u $USER_ID -g 600
+>>>>>>> test
 usermod bitrix -G root
 
 rm -f /var/run/*.pid

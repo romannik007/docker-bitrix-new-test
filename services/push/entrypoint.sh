@@ -1,5 +1,8 @@
 #!/bin/bash
+<<<<<<< HEAD
 mkdir -p /var/log/push-server
+=======
+>>>>>>> test
 
 #блок для установки запускаиз исзходников
 #ln -sf /opt/node_modules/push-server/logs /var/log/push-server
@@ -11,16 +14,27 @@ mkdir -p /var/log/push-server
 #ln -sf /opt/node_modules/push-server /opt/push-server
 #mkdir -p /opt/push-server/logs
 
+<<<<<<< HEAD
+=======
+useradd bitrix -u $USER_ID -g 600
+usermod bitrix -G root
+
+mkdir -p /var/log/push-server
+mkdir -p /var/log/supervisor
+>>>>>>> test
 
 chmod -R 777 /var/log/push-server
 chmod -R 777 /var/log/supervisor
 chmod -R 777 /var/log/push-server/*
 chmod -R 777 /var/log/supervisor/*
+<<<<<<< HEAD
 useradd bitrix -u 600 -g 600
 usermod bitrix -G root
 
 mkdir -p /var/log/supervisor
 mkdir -p /var/log/push-server
+=======
+>>>>>>> test
 
 
 #блок для установки запускаиз исзходников
