@@ -91,6 +91,8 @@ setcookie("PHPSESSID", "", 777, '/');
       ***'path_to_publish' => 'http://nginx:8895/bitrix/pub/'***
 
       пример .settings.php в папке services/bitrix-set/
+      
+      или кидаем services/bitrix-set/.settings_extra.php в www/bitrix
 
       **Если push&pull не работает, необходимо пересохранить настройки в модуле push&pull выбрав 2 пункт  и потом 4-й**
       **для прохождения теста с сокетами в /etc/hosts прописать**
