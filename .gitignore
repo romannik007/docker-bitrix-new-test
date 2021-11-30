@@ -10,4 +10,4 @@
 
 tmp.Dockerfile
 .git
-volumes/www/bitrix/managed_cache
+

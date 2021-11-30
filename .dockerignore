@@ -1,8 +1,6 @@
-volumes/www
-volumes/mysql
 volumes
-services/push/logs
-services/web/logs
-rebuild*
+volumes
+volumes
+**/logs
 .git
 docker-bitrix-new
