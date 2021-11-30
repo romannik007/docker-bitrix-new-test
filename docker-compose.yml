@@ -57,7 +57,8 @@ services:
       ports:
         - 80:80
         - 443:443
-        - 8893-8895:8893-8895
+        #открываем, если нужен доступ снаружи для push
+        #- 8893-8895:8893-8895
       networks:
         - bitrix
   #          ipv4_address: 172.16.16.4
@@ -90,9 +91,9 @@ services:
         #- ./services/tmp/:/tmp/
         - ./services/push/logs:/var/log/
         - ./services/push/supervisor/supervisord.ini:/etc/supervisord.d/supervisord.ini
-      ports:
-        - 8010-8015:8010-8015/tcp
-        - 9010-9011:9010-9011/tcp
+      #ports:
+        #- 8010-8015:8010-8015/tcp
+        #- 9010-9011:9010-9011/tcp
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4
