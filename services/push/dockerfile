@@ -1,0 +1,34 @@
+FROM centos:7
+  COPY bitrix.repo /etc/yum.repos.d/bitrix.repo
+
+  RUN yum -y update && \
+    curl -sL https://rpm.nodesource.com/setup_10.x | bash - && \
+    yum install -y epel-release && \
+    yum -y update && \
+    yum install -y \
+      bx-push-server \
+      initscripts \
+      mc \
+      net-tools \
+      sudo \
+      supervisor \
+    yum clean all && \
+    ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+    
+  #блок для установки из исходников
+  #RUN yum install -y python3 make wget
+  #RUN yum install -y nodejs gcc-c++
+  #RUN cd /opt && wget https://repos.1c-bitrix.ru/vm/push-server-0.2.2.tgz
+  #RUN cd /opt && npm install --production ./push-server-0.2.2.tgz
+  #RUN echo 'd /tmp/push-server 0770 apache apache -' > /etc/tmpfiles.d/push-server.conf
+  
+  COPY push-server-multi /etc/sysconfig/push-server-multi
+  COPY ./supervisor/supervisord.ini /etc/supervisord.d/supervisord.ini
+  COPY ./entrypoint.sh / 
+  RUN chmod +x /entrypoint.sh
+  EXPOSE 8010-8015
+  EXPOSE 9010-9011
+  #EXPOSE 8895
+  #EXPOSE 80
+  
+

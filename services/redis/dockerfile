@@ -1,0 +1,6 @@
+FROM redis:6
+COPY ./config/redis.conf /usr/local/etc/redis/redis.conf
+RUN apt-get update && apt-get install -y --no-install-recommends mc net-tools htop 
+RUN apt-get -y clean all && apt-get -y clean cache
+CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+ 
