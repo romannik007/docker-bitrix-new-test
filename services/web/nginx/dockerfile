@@ -2,24 +2,23 @@ FROM nginx:1.21-alpine
     
     ARG ARG_APP_TIMEZONE=Europe/Moscow
     ENV APP_TIMEZONE=${ARG_APP_TIMEZONE}
-
+    ARG USER_ID
+    ENV USER_ID=$USER_ID
+    COPY ./entrypoint.sh /
     # https://wiki.alpinelinux.org/wiki/Setting_the_timezone
-    RUN echo "${APP_TIMEZONE}" && apk --update add tzdata && \
+    RUN echo "${APP_TIMEZONE}" && apk --update add tzdata mc shadow && \
     cp /usr/share/zoneinfo/${APP_TIMEZONE} /etc/localtime && \
     echo $APP_TIMEZONE > /etc/timezone && \
-    apk del tzdata
+    apk del tzdata && \ 
+    usermod --uid $USER_ID nginx && \
+    chmod +x /entrypoint.sh
 
-    RUN apk add mc
-
-    RUN addgroup -S bitrix -g 600 && adduser bitrix -D -u 600 -G bitrix root
-
-
+    #RUN addgroup -S bitrix -g 600 && adduser bitrix -D -u 600 -G bitrix root
     COPY ./config/ /etc/nginx
-    COPY ./entrypoint.sh /
+    
     #RUN mkdir -p /var/www/html/bx-site && chown -R nginx:apache /var/www/html/bx-site
 
-    RUN chmod +x /entrypoint.sh
-    #user bitrix 
+    #user nginx
    
     EXPOSE 80
     EXPOSE 443

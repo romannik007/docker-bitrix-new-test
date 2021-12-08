@@ -1,4 +1,7 @@
 FROM centos:7
+ARG USER_ID
+ENV USER_ID=$USER_ID
+     COPY ./entrypoint.sh /
      RUN yum update -y && \
           rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
           rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
@@ -17,20 +20,24 @@ FROM centos:7
           php-pecl-mcrypt php-pecl-memcache  \
           php-pecl-ssh2 php-process php-pspell php-xml php-zipstream \
           php-zip \
-          nginx crontabs mc \
+          crontabs mc \
           php-pecl-redis gd-devel httpd-mod_session net-tools && \
           yum clean all && \
-          ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
-     #RUN groupadd apache && useradd -M nginx -g apache
+          ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
+          mkdir -p /var/www/html/bx-site && \
+          #groupadd apache && useradd -M nginx -g apache && \
+          #chown -R nginx:apache /var/www/html/bx-site && \
+          #groupadd bitrix -g 600 && \
+          #useradd bitrix -u $USER_ID -g 600 && \
+          #usermod bitrix -G root && \
+          usermod --uid $USER_ID apache && \
+          chmod +x /entrypoint.sh
+     #RUN 
      COPY ./httpd/config/ /etc/httpd
      COPY ./php.d/config/ /etc/php.d
      COPY ./cron/ /etc/cron.d
-     COPY ./entrypoint.sh /
-     COPY ./supervisor/ /etc/supervisord.d
-     RUN mkdir -p /var/www/html/bx-site && chown -R nginx:apache /var/www/html/bx-site
-     
-     RUN chmod +x /entrypoint.sh
-   
+     COPY ./supervisor/ /etc/supervisord.d 
+        
      #EXPOSE 80
      #EXPOSE 443
      EXPOSE 8090
