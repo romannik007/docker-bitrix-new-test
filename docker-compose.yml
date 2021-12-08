@@ -27,7 +27,8 @@ services:
       build:
         context: ./services/web
         dockerfile: dockerfile
-     
+        args: 
+          USER_ID: $USER_ID
       hostname: web
       #ports:
         #- 80:80
@@ -54,6 +55,8 @@ services:
     nginx:
       build:
         context: ./services/web/nginx
+        args: 
+          USER_ID: $USER_ID
       ports:
         - 80:80
         - 443:443
@@ -64,6 +67,8 @@ services:
   #          ipv4_address: 172.16.16.4
       depends_on:
         - web
+      environment:
+        USER_ID: $USER_ID
       volumes:
         - ./services/web/logs/nginx:/var/log/nginx
         - ./volumes/www/:/var/www/html/bx-site/
@@ -79,6 +84,8 @@ services:
       volumes:
         - redis-sock:/tmp/
         #- ./services/tmp/:/tmp/
+        - ./services/redis/config/redis.conf:/usr/local/etc/redis/redis.conf 
+    
     push:
       build:
         context: ./services/push
