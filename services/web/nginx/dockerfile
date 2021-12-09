@@ -10,6 +10,9 @@ FROM nginx:1.21-alpine
     cp /usr/share/zoneinfo/${APP_TIMEZONE} /etc/localtime && \
     echo $APP_TIMEZONE > /etc/timezone && \
     apk del tzdata && \ 
+    mkdir -p /var/log/nginx && \
+    mkdir -p /home/bitrix/.bx_temp/sitemanager  && \
+    chmod -R 777 /home/bitrix/.bx_temp/sitemanager && \
     usermod --uid $USER_ID nginx && \
     chmod +x /entrypoint.sh
 
@@ -22,6 +25,6 @@ FROM nginx:1.21-alpine
    
     EXPOSE 80
     EXPOSE 443
-    EXPOSE 8893-8895    
+    EXPOSE 8893-8895
 
      

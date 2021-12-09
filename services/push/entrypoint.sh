@@ -10,16 +10,16 @@
 #ln -sf /opt/node_modules/push-server /opt/push-server
 #mkdir -p /opt/push-server/logs
 
-useradd bitrix -u $USER_ID -g 600
-usermod bitrix -G root
-
+#useradd bitrix -u $USER_ID -g 1000
+#usermod bitrix -G root
+echo mkdir -p /var/log/push-server
 mkdir -p /var/log/push-server
 mkdir -p /var/log/supervisor
 
-chmod -R 777 /var/log/push-server
-chmod -R 777 /var/log/supervisor
-chmod -R 777 /var/log/push-server/*
-chmod -R 777 /var/log/supervisor/*
+chmod -R 777 /var/log
+#chmod -R 777 /var/log/supervisor
+#chmod -R 777 /var/log/push-server/*
+#chmod -R 777 /var/log/supervisor/*
 
 
 #блок для установки запускаиз исзходников
@@ -27,5 +27,8 @@ chmod -R 777 /var/log/supervisor/*
 #/etc/init.d/push-server-multi start sub
 #/etc/init.d/push-server-multi start pub
 
+#/etc/init.d/push-server-multi reset
+#/etc/init.d/push-server-multi stop
+/etc/init.d/push-server-multi update_configs
 exec /usr/bin/supervisord # -c /etc/supervisor.d/supervisord.conf
 

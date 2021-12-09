@@ -50,7 +50,8 @@ services:
       #command: ["/root/entry-web.sh"]
       environment:
         USER_ID: $USER_ID
-      entrypoint: [ "/entrypoint.sh" ]
+      #entrypoint: [ "/entrypoint.sh" ]
+      command: ["/usr/bin/supervisord"]
     
     nginx:
       build:
@@ -90,13 +91,15 @@ services:
       build:
         context: ./services/push
         dockerfile: dockerfile
+        args: 
+          USER_ID: $USER_ID
       hostname: push
       environment:
         USER_ID: $USER_ID
       volumes:
         - redis-sock:/tmp/
         #- ./services/tmp/:/tmp/
-        - ./services/push/logs:/var/log/
+        - ./services/push/logs/:/var/log/
         - ./services/push/supervisor/supervisord.ini:/etc/supervisord.d/supervisord.ini
       #ports:
         #- 8010-8015:8010-8015/tcp
@@ -106,7 +109,7 @@ services:
 #          ipv4_address: 172.16.16.4
       depends_on:
         - redis
-      entrypoint:  [ "/entrypoint.sh" ]
+      #entrypoint:  [ "/entrypoint.sh" ]
 
 volumes: 
   redis-sock:      

@@ -1,6 +1,8 @@
 FROM centos:7
+  ARG USER_ID
+  ENV USER_ID=$USER_ID
   COPY bitrix.repo /etc/yum.repos.d/bitrix.repo
-
+  COPY ./entrypoint.sh /
   RUN yum -y update && \
     curl -sL https://rpm.nodesource.com/setup_10.x | bash - && \
     yum install -y epel-release && \
@@ -13,8 +15,19 @@ FROM centos:7
       sudo \
       supervisor \
     yum clean all && \
-    ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
-    
+    ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
+    groupadd -f bitrix && \
+    #useradd bitrix -u $USER_ID -g bitrix && \
+    usermod -u $USER_ID bitrix  && \
+    chmod +x /entrypoint.sh
+    #mkdir -p /var/log/push-server && \
+    #mkdir -p /var/log/supervisor 
+    #chmod -R 777 /var/log/push-server && \
+    #chmod -R 777 /var/log/supervisor && \
+    #chmod -R 777 /var/log/push-server/ && \
+    #chmod -R 777 /var/log/supervisor/ && \
+    #chmod -R 777 /etc/push-server    
+  
   #блок для установки из исходников
   #RUN yum install -y python3 make wget
   #RUN yum install -y nodejs gcc-c++
@@ -24,11 +37,10 @@ FROM centos:7
   
   COPY push-server-multi /etc/sysconfig/push-server-multi
   COPY ./supervisor/supervisord.ini /etc/supervisord.d/supervisord.ini
-  COPY ./entrypoint.sh / 
-  RUN chmod +x /entrypoint.sh
   EXPOSE 8010-8015
   EXPOSE 9010-9011
   #EXPOSE 8895
   #EXPOSE 80
-  
+  #USER bitrix
+  CMD [ "/entrypoint.sh" ]
 
