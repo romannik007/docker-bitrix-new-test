@@ -4,7 +4,7 @@
 
 Файлы конфигурации взяты отсюда *https://dev.1c-bitrix.ru/docs/chm_files/redhat8.zip*
 
-7. **Этот пункт только для linux** 
+1. **Этот пункт только для linux** 
  
  **Чтобы** работало редактирование файлов в проекте и на хосте и в контейнере:
    
@@ -38,14 +38,14 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
 
 
-8. ***sudo service docker restart***
+2. ***sudo service docker restart***
    (все контейнеры и образы, созданные под предыдущим uid и gid, не будут видны)
-9. ***`mkdir -m 777 -p ./volumes/mysql`***
+3. ***`mkdir -m 777 -p ./volumes/mysql`***
     
    ***`mkdir -m 777 -p ./volumes/www`***
 
-10. ***`docker-compose up -d --build --force-recreate`***
-11.  **копируем** bitrixsetup.php или restore.php в папку ./volumes/www
+4. ***`docker-compose up -d --build --force-recreate`***
+5.  **копируем** bitrixsetup.php или restore.php в папку ./volumes/www
     
       **`chmod -R 777 ./volumes/www`**
 
@@ -58,33 +58,11 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
       Данные для подключения к БД пописаны в .env
 
       
-12. Вэб доступен по http://127.0.0.1 
+6. Вэб доступен по http://IP:BITRIX_PORT 
    
-   бесконечная авторизация решается:
    
-   **Файлы с сессиями продукта создаются, то PHP не хватает прав, чтобы к ним обратиться. Попробуйте в файле /bitrix/php_interface/dbconn.php закоментировать строку:
 
-//@umask(~BX_DIR_PERMISSIONS);**
-
-Если возникает проблема с авторизацией и BITRIX SESSID ERROR
-
-Дублирование куки PHPSESSID
-https://dev.1c-bitrix.ru/learning/cour...670&LES...
-
-
-Если возникли проблемы с очисткой cookies в браузере и не получается авторизоваться, можно инициировать удаление лишней куки со стороны сервера:
-
-1. Если не используется многосайтовость, а поле «Доменное имя» очищено, то надо удалить куку с точкой в начале. Для этого впишите в любую строку файла dbconn.php следующий код:
-setcookie("PHPSESSID", "", 777, '/', '.site.ru');
-где site.ru - имя вашего домена.
-
-2. Если используется многосайтовость или не очищено поле «Доменное имя», то впишите код:
-setcookie("PHPSESSID", "", 777, '/');
-строго без имени домена.
-
-
-
-13. в файле .settings.php в проекте прописываем данные для соединения с БД и ключ вставляем такой: 
+7. в файле .settings.php в проекте прописываем данные для соединения с БД и вставляем ключ: 
 
       ***'signature_key' => 'bVQdNsrRsulOnj9lkI0sPim292jMtrnji0zzEl5MzCBeHT7w1E5HL3aihFb6aiFJfNEIDxmcFrowS3PTLZFDxAfuNNuCN5EcFRaveaUaRZHSThtWKV7Vp5vGbz9kb3cN'***
 
@@ -92,12 +70,14 @@ setcookie("PHPSESSID", "", 777, '/');
 
       пример .settings.php в папке services/bitrix-set/
       
-      или кидаем services/bitrix-set/.settings_extra.php в www/bitrix
+      **или кидаем services/bitrix-set/.settings_extra.php в www/bitrix**
 
       **Если push&pull не работает, необходимо пересохранить настройки в модуле push&pull выбрав 2 пункт  и потом 4-й**
       **для прохождения теста с сокетами в /etc/hosts прописать**
 
-      ***<IP сетевой карты> <домен>***
+      **`<IP сетевой карты> <домен>`**
+
+      **либо использовать сайт по внешнему адресу сетевой карты**
 
      **далее заходить по домену**
 
