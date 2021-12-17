@@ -1,6 +1,8 @@
-FROM redis:6
+FROM redis:6-alpine
 COPY ./config/redis.conf /usr/local/etc/redis/redis.conf
-RUN apt-get update && apt-get install -y --no-install-recommends mc net-tools htop && \
-apt-get -y clean all && apt-get -y clean cache
+#RUN apt-get update && apt-get install -y --no-install-recommends mc net-tools htop && \
+#apt-get -y clean all && apt-get -y clean cache
+RUN apk add --update mc net-tools htop && \
+    rm -rf /var/cache/apk/*
 CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
  

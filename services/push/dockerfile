@@ -1,10 +1,10 @@
 FROM centos:7
-  ARG USER_ID
+  ARG USER_ID=1000
   ENV USER_ID=$USER_ID
   COPY bitrix.repo /etc/yum.repos.d/bitrix.repo
   COPY ./entrypoint.sh /
   RUN yum -y update && \
-    #curl -sL https://rpm.nodesource.com/setup_10.x | bash - && \
+    curl -sL https://rpm.nodesource.com/setup_16.x | bash - && \
     yum install -y epel-release && \
     yum -y update && \
     yum install -y \
