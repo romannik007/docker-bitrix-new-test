@@ -32,7 +32,7 @@ services:
           USER_ID: $USER_ID
       hostname: web
       #ports:
-        #- 80:80
+        #- 8088:80
         #- 8893-8895:8893-8895/tcp
         #- 443:443
       networks:
@@ -61,7 +61,7 @@ services:
           USER_ID: $USER_ID
           BITRIX_PORT: $BITRIX_PORT
       #ports:
-        #- 80:80
+        #- 8088:80
         #- 443:443
         #открываем, если нужен доступ снаружи для push
         #- 8893-8895:8893-8895
@@ -120,6 +120,8 @@ services:
         - $BITRIX_PORT:8088
       depends_on:
         - nginx
+      restart:
+        unless-stopped 
       volumes:
         - ./services/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg
       networks:
