@@ -1,0 +1,7 @@
+FROM alpine
+RUN apk --no-cache add vsftpd shadow && \
+    useradd bitrix -u 1000 -g ftp -p bitrix -m -d /ftp -s /bin/sh
+COPY vsftpd.conf /etc/vsftpd/vsftpd.conf
+EXPOSE 21
+#CMD [ "sh" ]
+ENTRYPOINT ["/usr/sbin/vsftpd"]

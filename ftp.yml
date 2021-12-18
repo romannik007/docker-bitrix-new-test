@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  ftp:
+    build:
+      context: ./services/ftp
+      dockerfile: dockerfile
+      args: 
+          USER_ID: $USER_ID
+    volumes:
+      - www:/ftp
+    ports:
+      - "2221:21"
+  
+  mysql:
+    volumes:
+      - mysql:/var/lib/mysql
+
+  web:
+    volumes:
+      - www:/var/www/html/bx-site/
+      #- ./bitrixsetup.php:/var/www/html/bx-site/bitrixsetup.php
+      #- ./restore.php:/var/www/html/bx-site/restore.php
+   
+  nginx:
+    volumes:
+      - www:/var/www/html/bx-site/
+
+volumes:
+  mysql:
+  www:

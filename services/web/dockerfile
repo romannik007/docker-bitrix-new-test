@@ -25,6 +25,7 @@ ENV USER_ID=$USER_ID
           yum clean all && \
           ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
           mkdir -p /var/www/html/bx-site && \
+          usermod --uid $USER_ID apache && \
           #groupadd apache && useradd -M nginx -g apache && \
           #chown -R nginx:apache /var/www/html/bx-site && \
           #groupadd bitrix -g 600 && \
@@ -38,17 +39,21 @@ ENV USER_ID=$USER_ID
           mkdir -p /home/bitrix/.bx_temp/sitemanager && \
           chmod -R 777 /home/bitrix/.bx_temp/sitemanager && \
           mkdir -p /tmp/session && \
-          chmod -R 777 /tmp/session && \
+          #chmod -R 777 /tmp/session && \
+          chown $USER_ID:apache /tmp/session && \
           mkdir -p /var/lib/php/session && \
-          chmod -R 777 /var/lib/php/session && \
+          #chmod -R 777 /var/lib/php/session && \
+          chown $USER_ID:apache /var/lib/php/session && \
           mkdir -p /tmp/php_upload && \
           chmod -R 777 /tmp/php_upload && \
-          usermod --uid $USER_ID apache && \
+          chown $USER_ID:apache /var/www/html/bx-site && \
           chmod +x /entrypoint.sh
      #RUN 
      COPY ./httpd/config/ /etc/httpd
      COPY ./php.d/config/ /etc/php.d
      COPY ./cron/ /etc/cron.d
+     COPY ./bitrixsetup.php /var/www/html/bx-site/bitrixsetup.php
+     COPY ./restore.php /var/www/html/bx-site/restore.php
      COPY ./supervisor/ /etc/supervisord.d 
         
      #EXPOSE 80

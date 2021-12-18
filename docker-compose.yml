@@ -19,8 +19,6 @@ services:
         MYSQL_USER: bitrix
         MYSQL_PASSWORD: ${BX_MYSQL_BITRIX_PASS}
         TZ: Europe/Moscow
-      volumes:
-        - ./volumes/mysql:/var/lib/mysql
       command: ['--innodb_strict_mode=OFF','--character-set-server=utf8', '--collation-server=utf8_unicode_ci',
          '--skip-character-set-client-handshake', '--sql-mode=']
 
@@ -42,12 +40,12 @@ services:
         - mysql
         - push
       volumes:
-        - ./volumes/www/:/var/www/html/bx-site/
         - ./services/web/logs/crond:/var/log/crond
         - ./services/web/logs/httpd:/var/log/httpd
         - ./services/web/logs/php:/var/log/php
         - ./services/web/logs/supervisor:/var/log/supervisor
         - ./services/web/cron/bitrix:/etc/cron.d/bitrix
+        - ./services/web/supervisor/supervisord.ini:/etc/supervisord.d/supervisord.ini
       #command: ["/root/entry-web.sh"]
       environment:
         USER_ID: $USER_ID
@@ -75,7 +73,6 @@ services:
         BITRIX_PORT: $BITRIX_PORT
       volumes:
         - ./services/web/logs/nginx:/var/log/nginx
-        - ./volumes/www/:/var/www/html/bx-site/
       #entrypoint: [ "/entrypoint.sh" ]
       
 
@@ -126,6 +123,7 @@ services:
         - ./services/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg
       networks:
         - bitrix
+
     
 
 volumes: 

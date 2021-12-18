@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+    mysql:
+      volumes:
+        - ./volumes/mysql:/var/lib/mysql
+
+    web:
+      volumes:
+        - ./volumes/www/:/var/www/html/bx-site/
+   
+    nginx:
+      volumes:
+        - ./volumes/www/:/var/www/html/bx-site/
+      #entrypoint: [ "/entrypoint.sh" ]
+      
+ 
+    
