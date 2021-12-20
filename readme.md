@@ -81,6 +81,21 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
      **далее заходить по домену**
 
+8. Для доступа по FTP используется порт из .env (https://github.com/delfer/docker-alpine-ftp-server)
+   
+   FTP использует волум без проброса
+   
+   запуск проекта с FTP:
+
+   `docker-compose -f docker-compose.yml -f ftp.yml up -d --build`
+
+   пользователь по умолчаю прописан в ftp.yml:
+
+   bitrix
+   123456
+   папка /ftp
+
+   подлючение активное
 
 
 **Дополнительно**:

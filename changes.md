@@ -14,3 +14,6 @@ v 1.2 от 17.12.2021
     `docker-compose -f docker-compose.yml -f ftp.yml`
 
     при запуске используются внутренние волумы
+
+v 1.3 от 20.12.2021
+- добавил vsftp сервер (пример использования взял отсюда https://github.com/delfer/docker-alpine-ftp-server)

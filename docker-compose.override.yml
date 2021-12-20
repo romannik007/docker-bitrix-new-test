@@ -11,6 +11,8 @@ services:
     nginx:
       volumes:
         - ./volumes/www/:/var/www/html/bx-site/
+    
+    haproxy:
       #entrypoint: [ "/entrypoint.sh" ]
       
  

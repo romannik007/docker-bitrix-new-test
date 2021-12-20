@@ -1,7 +1,14 @@
-FROM alpine
-RUN apk --no-cache add vsftpd shadow && \
-    useradd bitrix -u 1000 -g ftp -p bitrix -m -d /ftp -s /bin/sh
+FROM alpine:3.13
+
+COPY entrypoint.sh /entrypoint.sh
 COPY vsftpd.conf /etc/vsftpd/vsftpd.conf
-EXPOSE 21
-#CMD [ "sh" ]
-ENTRYPOINT ["/usr/sbin/vsftpd"]
+
+RUN apk --no-cache add vsftpd && \
+    chmod +x /entrypoint.sh
+
+EXPOSE 21 21000-21010
+VOLUME /ftp
+
+STOPSIGNAL SIGKILL
+
+ENTRYPOINT ["/entrypoint.sh"]

@@ -4,12 +4,13 @@ services:
     build:
       context: ./services/ftp
       dockerfile: dockerfile
-      args: 
-          USER_ID: $USER_ID
+    environment:
+      USERS: "bitrix|123456|/ftp|${USER_ID}"
     volumes:
       - www:/ftp
     ports:
-      - "2221:21"
+      - "$FTP_PORT:21"
+      #- "21000-21010:21000-21010"
   
   mysql:
     volumes:
