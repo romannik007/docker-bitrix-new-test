@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  webdav:
+    #https://github.com/BytemarkHosting/docker-webdav
+    build:
+      context: ./services/webdav
+      dockerfile: dockerfile-u
+      args: 
+        UID: $USER_ID
+    #userns_mode: 'host'
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - www:/var/lib/dav/data
+      - ./services/webdav/conf/conf-available/dav.conf:/usr/local/apache2/conf-available/dav.conf
+      - ./services/webdav/conf/sites-available/default-ssl.conf:/usr/local/apache2/sites-available/default-ssl.conf
+      - ./services/webdav/conf/sites-available/default.conf:/usr/local/apache2/sites-available/default.conf
+    environment:
+      UID: $USER_ID
+      USERNAME: "bitrix"
+      PASSWORD: "123456"
+      AUTH_TYPE: Digest
+    ports:
+      - "$WEBDAV_PORT:80"
+  
+  mysql:
+    volumes:
+      - mysql:/var/lib/mysql
+
+  web:
+    userns_mode: 'host'
+    volumes:
+      - www:/var/www/html/bx-site/
+      #- ./bitrixsetup.php:/var/www/html/bx-site/bitrixsetup.php
+      #- ./restore.php:/var/www/html/bx-site/restore.php
+   
+  nginx:
+    userns_mode: 'host'
+    volumes:
+      - www:/var/www/html/bx-site/
+
+volumes:
+  mysql:
+  www:

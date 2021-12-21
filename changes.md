@@ -17,3 +17,6 @@ v 1.2 от 17.12.2021
 
 v 1.3 от 20.12.2021
 - добавил vsftp сервер (пример использования взял отсюда https://github.com/delfer/docker-alpine-ftp-server)
+
+v 1.4 от 21.12.2021
+- добавил webdav сервер (https://github.com/BytemarkHosting/docker-webdav)

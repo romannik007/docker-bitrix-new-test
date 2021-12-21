@@ -97,6 +97,14 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
    подлючение активное
 
+9. Добавил webdav сервер. По умолчанию доступен на порту 7000, логин bitrix, пароль 123456
+   
+   запуск проекта с WEBDAV:
+
+   `docker-compose -f docker-compose.yml -f webdav.yml up -d --build`
+
+   пользователь по умолчаю прописан в webdav.yml:
+
 
 **Дополнительно**:
 - в файле .env содержатся данные для подключения к mysql,
