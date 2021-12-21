@@ -6,10 +6,15 @@ services:
       dockerfile: dockerfile
     environment:
       USERS: "bitrix|123456|${USER_ID}"
+    userns_mode: 'host'
+    #network_mode: "host"
+    cap_add:
+      - NET_ADMIN
     volumes:
       - www:/ftp
     ports:
       - "$FTP_PORT:21"
+      #- "20:20"
       #- "21000-21010:21000-21010"
   
   mysql:
@@ -17,12 +22,14 @@ services:
       - mysql:/var/lib/mysql
 
   web:
+    userns_mode: 'host'
     volumes:
       - www:/var/www/html/bx-site/
       #- ./bitrixsetup.php:/var/www/html/bx-site/bitrixsetup.php
       #- ./restore.php:/var/www/html/bx-site/restore.php
    
   nginx:
+    userns_mode: 'host'
     volumes:
       - www:/var/www/html/bx-site/
 

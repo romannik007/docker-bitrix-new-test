@@ -52,9 +52,10 @@ ENV USER_ID=$USER_ID
      COPY ./httpd/config/ /etc/httpd
      COPY ./php.d/config/ /etc/php.d
      COPY ./cron/ /etc/cron.d
-     COPY ./bitrixsetup.php /var/www/html/bx-site/bitrixsetup.php
-     COPY ./restore.php /var/www/html/bx-site/restore.php
-     COPY ./supervisor/ /etc/supervisord.d 
+     COPY ./supervisor/ /etc/supervisord.d
+     COPY --chown=$USER_ID:apache ./bitrixsetup.php /var/www/html/bx-site/bitrixsetup.php
+     COPY --chown=$USER_ID:apache ./restore.php /var/www/html/bx-site/restore.php
+      
         
      #EXPOSE 80
      #EXPOSE 443

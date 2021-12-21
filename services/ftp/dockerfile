@@ -6,9 +6,10 @@ COPY vsftpd.conf /etc/vsftpd/vsftpd.conf
 RUN apk --no-cache add vsftpd && \
     chmod +x /entrypoint.sh
 
-EXPOSE 21 21000-21010
+EXPOSE 20 21 21000-21010
 VOLUME /ftp
 
 STOPSIGNAL SIGKILL
 
 ENTRYPOINT ["/entrypoint.sh"]
+#CMD ["/usr/sbin/vsftpd", "/etc/vsftpd/vsftpd.conf"]
