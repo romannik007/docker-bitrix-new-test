@@ -103,7 +103,11 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
    `docker-compose -f docker-compose.yml -f webdav.yml up -d --build`
 
-   пользователь по умолчаю прописан в webdav.yml:
+   пользователь по умолчаю прописан в webdav.yml
+
+   Подключаем диск (указываем логин и пароль)
+   
+   *http://host:port/*
 
 
 **Дополнительно**:
