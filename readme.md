@@ -99,7 +99,9 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
 9. Добавил webdav сервер. По умолчанию доступен на порту 7000, логин bitrix, пароль 123456
    
-   запуск проекта с WEBDAV:
+   Работает на windows 10
+   
+   Запуск проекта с WEBDAV:
 
    `docker-compose -f docker-compose.yml -f webdav.yml up -d --build`
 
