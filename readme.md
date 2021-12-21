@@ -109,6 +109,8 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
    
    *http://host:port/*
 
+   ![](./images/webdav.png)
+
 
 **Дополнительно**:
 - в файле .env содержатся данные для подключения к mysql,
