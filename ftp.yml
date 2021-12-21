@@ -12,6 +12,7 @@ services:
       - NET_ADMIN
     volumes:
       - www:/ftp
+      - ./services/ftp/vsftpd.conf /etc/vsftpd/vsftpd.conf
     ports:
       - "$FTP_PORT:21"
       #- "20:20"
