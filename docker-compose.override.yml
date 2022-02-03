@@ -12,7 +12,7 @@ services:
       volumes:
         - ./volumes/www/:/var/www/html/bx-site/
     
-    haproxy:
+    #haproxy:
       #entrypoint: [ "/entrypoint.sh" ]
       
  
