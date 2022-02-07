@@ -21,6 +21,7 @@ RUN set -ex; \
     mkdir -p "/var/lib/dav/data" && \
     touch "/var/lib/dav/DavLock" && \
     chown www-data:www-data "/var/lib/dav"; \
+    chown www-data:www-data "/var/lib/dav/data"; \
     chown www-data:www-data "/var/lib/dav/DavLock"; \
     \
     # Enable DAV modules.
