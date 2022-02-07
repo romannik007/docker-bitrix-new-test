@@ -1,6 +1,8 @@
 FROM centos:7
 ARG USER_ID
 ENV USER_ID=$USER_ID
+ARG USER_GID
+ENV USER_GID=$USER_GID
      COPY ./entrypoint.sh /
      RUN yum update -y && \
           rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
@@ -24,8 +26,10 @@ ENV USER_ID=$USER_ID
           php-pecl-redis gd-devel httpd-mod_session net-tools && \
           yum clean all && \
           ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
-          mkdir -p /var/www/html/bx-site && \
+          groupmod --gid $USER_GID apache  && \
           usermod --uid $USER_ID apache && \
+          mkdir -p /var/www/html/bx-site && \
+          chown apache:apache /var/www/html/bx-site && \
           #groupadd apache && useradd -M nginx -g apache && \
           #chown -R nginx:apache /var/www/html/bx-site && \
           #groupadd bitrix -g 600 && \
@@ -40,21 +44,21 @@ ENV USER_ID=$USER_ID
           chmod -R 777 /home/bitrix/.bx_temp/sitemanager && \
           mkdir -p /tmp/session && \
           #chmod -R 777 /tmp/session && \
-          chown $USER_ID:apache /tmp/session && \
+          chown apache:apache /tmp/session && \
           mkdir -p /var/lib/php/session && \
           #chmod -R 777 /var/lib/php/session && \
-          chown $USER_ID:apache /var/lib/php/session && \
+          chown apache:apache /var/lib/php/session && \
           mkdir -p /tmp/php_upload && \
           chmod -R 777 /tmp/php_upload && \
-          chown $USER_ID:apache /var/www/html/bx-site && \
+          chown apache:apache /var/www/html/bx-site && \
           chmod +x /entrypoint.sh
      #RUN 
      COPY ./httpd/config/ /etc/httpd
      COPY ./php.d/config/ /etc/php.d
      COPY ./cron/ /etc/cron.d
      COPY ./supervisor/ /etc/supervisord.d
-     COPY --chown=$USER_ID:apache ./bitrixsetup.php /var/www/html/bx-site/bitrixsetup.php
-     COPY --chown=$USER_ID:apache ./restore.php /var/www/html/bx-site/restore.php
+     #COPY --chown=$USER_ID:apache ./bitrixsetup.php /var/www/html/bx-site/bitrixsetup.php
+     #COPY --chown=$USER_ID:apache ./restore.php /var/www/html/bx-site/restore.php
       
         
      #EXPOSE 80

@@ -15,6 +15,7 @@ services:
       - ./services/webdav/conf/conf-available/dav.conf:/usr/local/apache2/conf-available/dav.conf
       - ./services/webdav/conf/sites-available/default-ssl.conf:/usr/local/apache2/sites-available/default-ssl.conf
       - ./services/webdav/conf/sites-available/default.conf:/usr/local/apache2/sites-available/default.conf
+    working_dir: /var/lib/dav/data
     environment:
       UID: $USER_ID
       USERNAME: "bitrix"

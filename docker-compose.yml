@@ -28,6 +28,7 @@ services:
         dockerfile: dockerfile
         args: 
           USER_ID: $USER_ID
+          USER_GID: $USER_GID
       hostname: web
       #ports:
         #- 8088:80
@@ -49,6 +50,7 @@ services:
       #command: ["/root/entry-web.sh"]
       environment:
         USER_ID: $USER_ID
+        USER_GID: $USER_GID
       #entrypoint: [ "/entrypoint.sh" ]
       command: ["/usr/bin/supervisord"]
     
@@ -57,6 +59,7 @@ services:
         context: ./services/web/nginx
         args: 
           USER_ID: $USER_ID
+          USER_GID: $USER_GID
           BITRIX_PORT: $BITRIX_PORT
       #ports:
         #- 8088:80
@@ -70,6 +73,7 @@ services:
         - web
       environment:
         USER_ID: $USER_ID
+        USER_GID: $USER_GID
         BITRIX_PORT: $BITRIX_PORT
       volumes:
         - ./services/web/logs/nginx:/var/log/nginx

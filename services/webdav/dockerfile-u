@@ -1,7 +1,9 @@
 FROM httpd
 
 ARG UID
+ARG GID
 ENV $UID=$UID
+ENV $GID=$GID
 
 # These variables are inherited from the httpd:alpine image:
 # ENV HTTPD_PREFIX /usr/local/apache2
@@ -12,12 +14,14 @@ COPY conf/ conf/
 
 RUN set -ex; \
     # Create empty default DocumentRoot.
+    groupmod --gid $GID  www-data;   \
+    usermod --uid $UID www-data; \
     mkdir -p "/var/www/html"; \
     # Create directories for Dav data and lock database.
-    mkdir -p "/var/lib/dav/data"; \
-    touch "/var/lib/dav/DavLock"; \
-    usermod --uid $UID www-data && \
-    chown -R www-data:www-data "/var/lib/dav"; \
+    mkdir -p "/var/lib/dav/data" && \
+    touch "/var/lib/dav/DavLock" && \
+    chown www-data:www-data "/var/lib/dav"; \
+    chown www-data:www-data "/var/lib/dav/DavLock"; \
     \
     # Enable DAV modules.
     for i in dav dav_fs; do \
@@ -55,6 +59,8 @@ RUN set -ex; \
     apt-get install -y openssl apache2-dev libapr1-dev libaprutil1-dev mc net-tools
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY --chown=www-data:www-data ./bitrixsetup.php /var/lib/dav/data/bitrixsetup.php
+COPY --chown=www-data:www-data ./restore.php /var/lib/dav/data/restore.php
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 EXPOSE 80/tcp 443/tcp
 ENTRYPOINT [ "docker-entrypoint.sh" ]
