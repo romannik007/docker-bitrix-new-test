@@ -38,8 +38,7 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
 
 
-2. ***sudo service docker restart***
-   (все контейнеры и образы, созданные под предыдущим uid и gid, не будут видны)
+2. deleted
 3. ***`mkdir -m 777 -p ./volumes/mysql`***
     
    ***`mkdir -m 777 -p ./volumes/www`***
@@ -70,7 +69,7 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
       пример .settings.php в папке services/bitrix-set/
       
-      **или кидаем services/bitrix-set/.settings_extra.php в www/bitrix**
+      **или кидаем services/bitrix-set/.settings_extra.php (для haproxy по умолчанию есть 2 примера (переименовать в .settings_extra.php)) в www/bitrix**
 
       **Если push&pull не работает, необходимо пересохранить настройки в модуле push&pull выбрав 2 пункт  и потом 4-й**
       **для прохождения теста с сокетами в /etc/hosts прописать**
@@ -118,6 +117,7 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 - в файле .env содержатся данные для подключения к mysql,
   логин и пароль пользователя bitrix из env используем только при чистой установке битрикс
 - в папках **services/web/httpd, services/web/nginx, services/web/php** содержатся файлы для кастомных настроек
+- services/bitrix-set
 - логи apache, nginx и cron в папке **services/<сервис>/logs**
 - адрес сервера БД - **mysql** (указываем для подключения)
 

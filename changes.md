@@ -17,5 +17,5 @@ v 1.3 от 20.12.2021
 
     при запуске используются внутренние волумы
 
-v 1.4 от 21.12.2021
+v 1.4 от 21.12.2021 (master)
 - добавил webdav сервер (https://github.com/BytemarkHosting/docker-webdav)
