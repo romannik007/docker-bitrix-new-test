@@ -1,5 +1,51 @@
+[client]
+socket=/var/lib/mysql/mysql.sock
+
+# bitrix
+default-character-set = utf8
+
 [mysqld]
-transaction-isolation = READ-COMMITTED
-innodb_flush_log_at_trx_commit = 2
-innodb_flush_method = O_DIRECT
-thread_cache_size = 4
+server-id=1
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid
+
+gtid_mode=ON
+log_bin=mysql-bin
+log-slave-updates = 0
+enforce-gtid-consistency
+server_id=1
+replicate-do-db = sitemanager
+sync_binlog = 0
+
+#log-bin
+#log_slave_updates
+expire_logs_days=1
+
+# bitrix
+max_allowed_packet = 16M
+#expire_logs_days=10
+sql_mode = ""
+innodb_file_per_table=1
+character-set-server = utf8
+collation-server = utf8_unicode_ci
+init-connect = "SET NAMES utf8 COLLATE utf8_unicode_ci"
+
+tmpdir = /tmp
+max_heap_table_size	= 1024M
+tmp_table_size = 1024M
+
+# slow log
+slow_query_log = /var/log/mysql/mysql-slow.log
+long_query_time = 2
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet = 16M
+default-character-set = utf8
+# end of bitrix
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+#symbolic-links=0

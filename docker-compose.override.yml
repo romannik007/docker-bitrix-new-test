@@ -3,7 +3,9 @@ services:
     mysql:
       volumes:
         - ./volumes/mysql:/var/lib/mysql
-
+        - ./services/mysql/my.cnf.d/zbx-custom.cnf:/etc/my.cnf.d/mysqld.cnf:ro
+        - ./services/mysql/log/:/var/log
+    
     web:
       volumes:
         - ./volumes/www/:/var/www/html/bx-site/

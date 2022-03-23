@@ -1,0 +1,48 @@
+2022-03-23T10:16:55.103189Z 0 [Warning] option 'slow_query_log': boolean value '/var/log/mysql/mysql-slow.log' wasn't recognized. Set to OFF.
+2022-03-23T10:16:55.103250Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+2022-03-23T10:16:55.103261Z 0 [Warning] 'NO_AUTO_CREATE_USER' sql mode was not set.
+2022-03-23T10:16:55.104585Z 0 [Note] mysqld (mysqld 5.7.36-39-log) starting as process 1 ...
+2022-03-23T10:16:55.107216Z 0 [Note] InnoDB: PUNCH HOLE support available
+2022-03-23T10:16:55.107245Z 0 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+2022-03-23T10:16:55.107248Z 0 [Note] InnoDB: Uses event mutexes
+2022-03-23T10:16:55.107250Z 0 [Note] InnoDB: GCC builtin __atomic_thread_fence() is used for memory barrier
+2022-03-23T10:16:55.107251Z 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2022-03-23T10:16:55.107253Z 0 [Note] InnoDB: Using Linux native AIO
+2022-03-23T10:16:55.107404Z 0 [Note] InnoDB: Number of pools: 1
+2022-03-23T10:16:55.107631Z 0 [Note] InnoDB: Using CPU crc32 instructions
+2022-03-23T10:16:55.108984Z 0 [Note] InnoDB: Initializing buffer pool, total size = 128M, instances = 1, chunk size = 128M
+2022-03-23T10:16:55.112698Z 0 [Note] InnoDB: Completed initialization of buffer pool
+2022-03-23T10:16:55.114706Z 0 [Note] InnoDB: If the mysqld execution user is authorized, page cleaner thread priority can be changed. See the man page of setpriority().
+2022-03-23T10:16:55.130260Z 0 [Note] InnoDB: Recovering partial pages from the parallel doublewrite buffer at /var/lib/mysql/xb_doublewrite
+2022-03-23T10:16:55.136262Z 0 [Note] InnoDB: Highest supported file format is Barracuda.
+2022-03-23T10:16:55.138132Z 0 [Note] InnoDB: Log scan progressed past the checkpoint lsn 45490348
+2022-03-23T10:16:55.138165Z 0 [Note] InnoDB: Doing recovery: scanned up to log sequence number 45490357
+2022-03-23T10:16:55.138169Z 0 [Note] InnoDB: Database was not shutdown normally!
+2022-03-23T10:16:55.138171Z 0 [Note] InnoDB: Starting crash recovery.
+2022-03-23T10:16:55.147300Z 0 [Note] InnoDB: Created parallel doublewrite buffer at /var/lib/mysql/xb_doublewrite, size 3932160 bytes
+2022-03-23T10:16:55.161762Z 0 [Note] InnoDB: Last MySQL binlog file position 0 437035, file name mysql-bin.000004
+2022-03-23T10:16:55.539728Z 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2022-03-23T10:16:55.539760Z 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2022-03-23T10:16:55.539937Z 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2022-03-23T10:16:55.559449Z 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+2022-03-23T10:16:55.560501Z 0 [Note] InnoDB: 96 redo rollback segment(s) found. 96 redo rollback segment(s) are active.
+2022-03-23T10:16:55.560533Z 0 [Note] InnoDB: 32 non-redo rollback segment(s) are active.
+2022-03-23T10:16:55.561773Z 0 [Note] InnoDB: Percona XtraDB (http://www.percona.com) 5.7.36-39 started; log sequence number 45490357
+2022-03-23T10:16:55.562134Z 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+2022-03-23T10:16:55.563230Z 0 [Note] Plugin 'FEDERATED' is disabled.
+2022-03-23T10:16:55.575563Z 0 [Note] Found ca.pem, server-cert.pem and server-key.pem in data directory. Trying to enable SSL support using them.
+2022-03-23T10:16:55.575614Z 0 [Note] Skipping generation of SSL certificates as certificate files are present in data directory.
+2022-03-23T10:16:55.575707Z 0 [Warning] A deprecated TLS version TLSv1 is enabled. Please use TLSv1.2 or higher.
+2022-03-23T10:16:55.575711Z 0 [Warning] A deprecated TLS version TLSv1.1 is enabled. Please use TLSv1.2 or higher.
+2022-03-23T10:16:55.576728Z 0 [Warning] CA certificate ca.pem is self signed.
+2022-03-23T10:16:55.576830Z 0 [Note] Skipping generation of RSA key pair as key files are present in data directory.
+2022-03-23T10:16:55.577631Z 0 [Note] Server hostname (bind-address): '*'; port: 3306
+2022-03-23T10:16:55.577890Z 0 [Note] IPv6 is available.
+2022-03-23T10:16:55.577938Z 0 [Note]   - '::' resolves to '::';
+2022-03-23T10:16:55.578033Z 0 [Note] Server socket created on IP: '::'.
+2022-03-23T10:16:55.584922Z 0 [Note] Failed to start slave threads for channel ''
+2022-03-23T10:16:55.588113Z 0 [Note] Event Scheduler: Loaded 0 events
+2022-03-23T10:16:55.588307Z 0 [Note] mysqld: ready for connections.
+Version: '5.7.36-39-log'  socket: '/var/lib/mysql/mysql.sock'  port: 3306  Percona Server (GPL), Release 39, Revision 305619d
+2022-03-23T10:16:56.621866Z 0 [Note] InnoDB: Buffer pool(s) load completed at 220323 13:16:56
+2022-03-23T10:17:14.603624Z 12 [Note] Start binlog_dump to master_thread_id(12) slave_server(2), pos(, 4)
