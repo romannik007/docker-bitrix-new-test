@@ -2,6 +2,8 @@ version: '3.8'
 services:
     xtrabackup:
       image: perconalab/percona-xtrabackup:2.4
+      profiles: 
+        - xtrabackup
       volumes:
         - ./volumes/mysql/:/var/lib/mysql/
         
