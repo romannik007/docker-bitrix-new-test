@@ -14,9 +14,10 @@ pid-file=/var/run/mysqld/mysqld.pid
 gtid_mode=ON
 log_bin=mysql-bin
 log-slave-updates = 0
-enforce-gtid-consistency
+enforce_gtid_consistency=ON
 server_id=1
 replicate-do-db = sitemanager
+replicate-do-db = sitemanager1
 sync_binlog = 0
 
 #log-bin

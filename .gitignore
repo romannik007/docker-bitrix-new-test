@@ -8,6 +8,6 @@
 /services/web/logs/*
 !/services/web/logs/.gitkeep
 volumes/tmp
-
+services/mysql/log
 tmp.Dockerfile
 .git

@@ -31,7 +31,7 @@ services:
       ports:
         - 80:80
         - 8893-8895:8893-8895/tcp
-        - 443:443
+        - 4443:443
       networks:
         - bitrix
         - docker-net

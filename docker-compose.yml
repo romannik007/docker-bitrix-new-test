@@ -130,12 +130,14 @@ services:
       image: haproxy:alpine
       ports:
         - $BITRIX_PORT:8088
+        - $BITRIX_SSL_PORT:4443
       depends_on:
         - nginx
       restart:
         unless-stopped 
       volumes:
         - ./services/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg
+        - ./services/haproxy/ssl:/ssl
       networks:
         - bitrix
 
