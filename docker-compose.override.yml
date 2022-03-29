@@ -3,7 +3,7 @@ services:
     mysql:
       volumes:
         - ./volumes/mysql:/var/lib/mysql
-        - ./services/mysql/my.cnf.d/zbx-custom-bin.cnf:/etc/my.cnf.d/mysqld.cnf:ro
+        #- ./services/mysql/my.cnf.d/zbx-custom-bin.cnf:/etc/my.cnf.d/mysqld.cnf:ro
         - ./services/mysql/log/:/var/log
     
     web:
