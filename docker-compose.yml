@@ -72,6 +72,7 @@ services:
           USER_ID: $USER_ID
           USER_GID: $USER_GID
           BITRIX_PORT: $BITRIX_PORT
+          BITRIX_SSL_PORT: $BITRIX_SSL_PORT
       #ports:
         #- 8088:80
         #- 443:443
@@ -86,6 +87,7 @@ services:
         USER_ID: $USER_ID
         USER_GID: $USER_GID
         BITRIX_PORT: $BITRIX_PORT
+        BITRIX_SSL_PORT: $BITRIX_SSL_PORT
       volumes:
         - ./services/web/logs/nginx:/var/log/nginx
       #entrypoint: [ "/entrypoint.sh" ]
