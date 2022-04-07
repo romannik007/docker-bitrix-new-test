@@ -74,7 +74,7 @@ services:
           BITRIX_PORT: $BITRIX_PORT
           BITRIX_SSL_PORT: $BITRIX_SSL_PORT
       ports:
-        - 8088:80
+        - $BITRIX_PORT:80
         - 443:443
         #открываем, если нужен доступ снаружи для push
         #- 8893-8895:8893-8895
@@ -130,6 +130,8 @@ services:
     
     haproxy:
       image: haproxy:alpine
+      profiles: 
+        - haproxy
       #ports:
         #- $BITRIX_PORT:8088
         #- $BITRIX_SSL_PORT:443

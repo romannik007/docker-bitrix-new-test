@@ -69,7 +69,7 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
       пример .settings.php в папке services/bitrix-set/
       
-      **или кидаем services/bitrix-set/.settings_extra.php (для haproxy по умолчанию есть 2 примера (переименовать в .settings_extra.php)) в www/bitrix**
+      **или кидаем services/bitrix-set/.settings_extra.php в www/bitrix**
 
       **Если push&pull не работает, необходимо пересохранить настройки в модуле push&pull выбрав 2 пункт  и потом 4-й**
       **для прохождения теста с сокетами в /etc/hosts прописать**

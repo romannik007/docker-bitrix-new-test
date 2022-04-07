@@ -19,3 +19,6 @@ v 1.3 от 20.12.2021
 
 v 1.4 от 21.12.2021 (master)
 - добавил webdav сервер (https://github.com/BytemarkHosting/docker-webdav)
+
+v 1.5 от 07.04.2022 
+- убрал haproxy
