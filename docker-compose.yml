@@ -73,9 +73,9 @@ services:
           USER_GID: $USER_GID
           BITRIX_PORT: $BITRIX_PORT
           BITRIX_SSL_PORT: $BITRIX_SSL_PORT
-      #ports:
-        #- 8088:80
-        #- 443:443
+      ports:
+        - 8088:80
+        - 443:443
         #открываем, если нужен доступ снаружи для push
         #- 8893-8895:8893-8895
       networks:
@@ -130,9 +130,9 @@ services:
     
     haproxy:
       image: haproxy:alpine
-      ports:
-        - $BITRIX_PORT:8088
-        - $BITRIX_SSL_PORT:4443
+      #ports:
+        #- $BITRIX_PORT:8088
+        #- $BITRIX_SSL_PORT:443
       depends_on:
         - nginx
       restart:
@@ -142,6 +142,20 @@ services:
         - ./services/haproxy/ssl:/ssl
       networks:
         - bitrix
+    
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin:latest
+      ports:
+        - 33333:80
+      networks:
+        - bitrix
+      environment:
+ #      PMA_ARBITRARY: 1
+        PMA_HOST: mysql
+        PMA_PORT: 3306
+        PMA_USER: root
+        PMA_PASSWORD: $BX_MYSQL_ROOT_PASS
+#       PMA_ABSOLUTE_URI: /phpmyadmin
 
     
 
