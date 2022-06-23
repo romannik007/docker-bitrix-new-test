@@ -53,17 +53,19 @@ services:
         - push
       volumes:
         - ./services/web/logs/crond:/var/log/crond
+        - ./services/web/logs/xdebug:/var/log/xdebug
         - ./services/web/logs/httpd:/var/log/httpd
         - ./services/web/logs/php:/var/log/php
         - ./services/web/logs/supervisor:/var/log/supervisor
         - ./services/web/cron/bitrix:/etc/cron.d/bitrix
         - ./services/web/supervisor/supervisord.ini:/etc/supervisord.d/supervisord.ini
+        - ./services/web/php.d/config/zx-bitrix.ini:/etc/php.d/zx-bitrix.ini
       #command: ["/root/entry-web.sh"]
       environment:
         USER_ID: $USER_ID
         USER_GID: $USER_GID
-      #entrypoint: [ "/entrypoint.sh" ]
-      command: ["/usr/bin/supervisord"]
+      entrypoint: [ "/entrypoint.sh" ]
+      #command: ["/usr/bin/supervisord"]
     
     nginx:
       build:
@@ -90,7 +92,7 @@ services:
         BITRIX_SSL_PORT: $BITRIX_SSL_PORT
       volumes:
         - ./services/web/logs/nginx:/var/log/nginx
-      #entrypoint: [ "/entrypoint.sh" ]
+      #entrypoint: [ "/docker-entrypoint.d/entry.sh" ]
       
 
     redis:
@@ -126,7 +128,7 @@ services:
 #          ipv4_address: 172.16.16.4
       depends_on:
         - redis
-      #entrypoint:  [ "/entrypoint.sh" ]
+      entrypoint:  [ "/entrypoint.sh" ]
     
     haproxy:
       image: haproxy:alpine

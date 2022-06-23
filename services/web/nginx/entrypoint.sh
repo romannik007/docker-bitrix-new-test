@@ -1,6 +1,7 @@
 #!/bin/sh
 
 mkdir -p /var/log/nginx
+chmod -R 777 /var/log
 mkdir -p /home/bitrix/.bx_temp/sitemanager
 chmod -R 777 /home/bitrix/.bx_temp/sitemanager
 sed -i "s/\$host;/\$host:$BITRIX_PORT;/g" /etc/nginx/sites-available/default.conf

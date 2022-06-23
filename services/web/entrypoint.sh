@@ -22,4 +22,5 @@ rm -f /var/run/*.pid
 #chown -R nginx:apache /var/www/html/bx-site
 #chown -R bitrix /var/www/html/bx-site
 #chmod -R 777 /var/log
+chmod -R 777 /var/log
 exec /usr/bin/supervisord #-c /etc/supervisor.d/supervisord.conf

@@ -41,6 +41,5 @@ FROM centos:7
   EXPOSE 9010-9011
   #EXPOSE 8895
   #EXPOSE 80
-  #USER bitrix
   CMD [ "/entrypoint.sh" ]
 
