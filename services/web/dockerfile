@@ -10,7 +10,9 @@ ENV USER_GID=$USER_GID
           yum-config-manager --enable remi-php74 && \
           yum install -y epel-release && \
           yum update -y && \
+          curl -sL https://rpm.nodesource.com/setup_16.x | bash - && \
           yum -y install yum-utils \
+          nodejs \
           httpd \
           supervisor \
           php php-cli php-common \
