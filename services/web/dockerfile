@@ -4,10 +4,10 @@ ENV USER_ID=$USER_ID
 ARG USER_GID
 ENV USER_GID=$USER_GID
      COPY ./entrypoint.sh /
-     RUN yum update -y && \
-          rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
+     RUN yum update -y 
+     RUN  rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
           rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
-          yum-config-manager --enable remi-php74 && \
+          yum-config-manager --enable remi-php8.1 && \
           yum install -y epel-release && \
           yum update -y && \
           curl -sL https://rpm.nodesource.com/setup_16.x | bash - && \

@@ -1,5 +1,6 @@
-volumes
+volumes/*
 **/logs
 **/*.log
 .git
 docker-bitrix-new
+services/web/logs
