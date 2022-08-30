@@ -8,15 +8,16 @@ FROM nginx:1.21-alpine
     ENV USER_GID=$USER_GID
     ARG BITRIX_PORT
     ENV BITRIX_PORT=$BITRIX_PORT
-    COPY entrypoint.sh /docker-entrypoint.d/entry.sh
+    COPY --chown=nginx:nginx entrypoint.sh /docker-entrypoint.d/entry.sh
     # https://wiki.alpinelinux.org/wiki/Setting_the_timezone
     RUN echo "${APP_TIMEZONE}" && apk --update add tzdata mc shadow && \
     cp /usr/share/zoneinfo/${APP_TIMEZONE} /etc/localtime && \
     echo $APP_TIMEZONE > /etc/timezone && \
     apk del tzdata && \ 
     mkdir -p /var/log/nginx && \
-    mkdir -p /home/bitrix/.bx_temp/sitemanager  && \
+    mkdir -p /home/bitrix/.bx_temp/sitemanager  && \ 
     chmod -R 777 /home/bitrix/.bx_temp/sitemanager && \
+    mkdir -p /var/cache/nginx && \
     groupmod --gid $USER_GID nginx && \
     usermod --uid $USER_ID nginx && \
     chmod +x /docker-entrypoint.d/entry.sh

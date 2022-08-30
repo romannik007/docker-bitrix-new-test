@@ -3,14 +3,14 @@ ARG USER_ID
 ENV USER_ID=$USER_ID
 ARG USER_GID
 ENV USER_GID=$USER_GID
-     COPY ./entrypoint.sh /
      RUN yum update -y 
      RUN  rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
           rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
-          yum-config-manager --enable remi-php8.1 && \
+          yum-config-manager --disable 'remi-php*' && \
+          yum-config-manager --enable remi-php74 && \
           yum install -y epel-release && \
-          yum update -y && \
-          curl -sL https://rpm.nodesource.com/setup_16.x | bash - && \
+          yum update -y
+     RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash - && \
           yum -y install yum-utils \
           nodejs \
           httpd \
@@ -26,8 +26,10 @@ ENV USER_GID=$USER_GID
           php-zip \
           crontabs mc \
           php-pecl-redis gd-devel httpd-mod_session net-tools && \
-          pecl install xdebug && \
+          #pecl install xdebug
           yum clean all
+     RUN php -v; pecl install xdebug
+     COPY --chown=apache:apache ./entrypoint.sh /
      RUN  ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
           groupmod --gid $USER_GID apache  && \
           usermod --uid $USER_ID apache && \

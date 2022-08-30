@@ -6,8 +6,8 @@ FROM centos:7
   RUN yum -y update && \
     curl -sL https://rpm.nodesource.com/setup_16.x | bash - && \
     yum install -y epel-release && \
-    yum -y update && \
-    yum install -y \
+    yum -y update
+  RUN yum install -y \
       bx-push-server \
       initscripts \
       mc \
