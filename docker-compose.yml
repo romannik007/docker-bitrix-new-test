@@ -40,6 +40,7 @@ services:
         args: 
           USER_ID: $USER_ID
           USER_GID: $USER_GID
+          PHP_VERSION: ${PHP_VERSION:-81}
       hostname: web
       #ports:
         #- 8088:80
