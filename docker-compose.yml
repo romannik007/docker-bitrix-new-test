@@ -12,8 +12,11 @@ services:
       
     
     mysql:
-      image: percona/percona-server:5.7
+      build:
+        context: ./services/mysql
+        dockerfile: Dockerfile
       #container_name: bx-mysql
+      user: $USER_ID:$USER_GID
       hostname: mysql
       healthcheck:
         test: "/usr/bin/mysql --user=root --password=${BX_MYSQL_ROOT_PASS} --execute \"SHOW DATABASES;\""
