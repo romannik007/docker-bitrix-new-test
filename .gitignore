@@ -11,3 +11,4 @@ volumes/tmp
 services/mysql/log
 tmp.Dockerfile
 .git
+bitrixsetup.php
