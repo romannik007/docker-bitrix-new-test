@@ -129,8 +129,8 @@ services:
         context: ./services/push
         dockerfile: dockerfile
         args: 
-          USER_ID: ${USER_ID:-1000}
-          TZ: ${TZ:-Europe/Moscow}
+          USER_ID: $USER_ID
+          TZ: $TZ:-Europe/Moscow
       hostname: push
       environment:
         USER_ID: ${USER_ID:-1000}
@@ -177,7 +177,7 @@ services:
         PMA_HOST: mysql
         PMA_PORT: 3306
         PMA_USER: root
-        PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD:-**Admin**}
+        PMA_PASSWORD: $MYSQL_PASSWORD
 #       PMA_ABSOLUTE_URI: /phpmyadmin
 
     
