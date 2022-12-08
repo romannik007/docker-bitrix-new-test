@@ -46,6 +46,7 @@ services:
                 --pxc_strict_mode=PERMISSIVE' #for percona extradb cluster
 
     web:
+      image: docker-bitrix-new-test-web:${PHP_VERSION:-74}
       build:
         context: ./services/web
         dockerfile: dockerfile
