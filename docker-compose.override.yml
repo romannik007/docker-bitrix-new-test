@@ -8,11 +8,11 @@ services:
     
     web:
       volumes:
-        - $BITRIX_PATH:/var/www/html/bx-site/
+        - ${BITRIX_PATH:-./volumes/www/}:/var/www/html/bx-site/
    
     nginx:
       volumes:
-        - $BITRIX_PATH:/var/www/html/bx-site/
+        - ${BITRIX_PATH:-./volumes/www/}:/var/www/html/bx-site/
     
     #haproxy:
       #entrypoint: [ "/entrypoint.sh" ]

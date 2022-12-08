@@ -22,7 +22,7 @@ services:
       user: ${USER_ID:-1000}:${USER_GID:-1000}
       hostname: mysql
       healthcheck:
-        test: "/usr/bin/mysql --user=root --password=${MYSQL_ROOT_PASSWORD} --execute \"SHOW DATABASES;\""
+        test: "/usr/bin/mysql --user=root --password=${MYSQL_ROOT_PASSWORD:-**Admin**} --execute \"SHOW DATABASES;\""
         interval: 2s
         timeout: 20s
         retries: 10
@@ -131,7 +131,7 @@ services:
         context: ./services/push
         dockerfile: dockerfile
         args: 
-          USER_ID: $USER_ID
+          USER_ID: ${USER_ID:-1000}
           TZ: $TZ:-Europe/Moscow
       hostname: push
       environment:
@@ -179,7 +179,7 @@ services:
         PMA_HOST: mysql
         PMA_PORT: 3306
         PMA_USER: root
-        PMA_PASSWORD: $MYSQL_ROOT_PASSWORD
+        PMA_PASSWORD: $MYSQL_ROOT_PASSWORD:-**Admin**}
 #       PMA_ABSOLUTE_URI: /phpmyadmin
 
     
