@@ -7,8 +7,10 @@
 !/services/push/logs/.gitkeep
 /services/web/logs/*
 !/services/web/logs/.gitkeep
-volumes/tmp
-services/mysql/log
+/volumes/tmp
+/services/mysql/log
 tmp.Dockerfile
 .git
 bitrixsetup.php
+restore.php
+.env

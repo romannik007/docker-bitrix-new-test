@@ -1,4 +1,4 @@
-FROM percona/percona-server:5.7
+FROM 'percona/percona-xtradb-cluster:5.7'
 ARG USER_ID
 ENV USER_ID=$USER_ID
 ARG USER_GID
@@ -8,5 +8,8 @@ RUN groupmod --gid $USER_GID mysql  && \
     usermod --uid $USER_ID mysql && \
     chown -R mysql:mysql /var/run/mysqld && \
     id mysql && \
-    ls -aln /var/run/mysqld
+    ls -aln /var/run/mysqld; \
+    mkdir -p /var/lib/mysql && \
+    chown -R mysql:mysql /etc/mysql; \
+    chown -R mysql:mysql /var/lib/mysql
 USER mysql

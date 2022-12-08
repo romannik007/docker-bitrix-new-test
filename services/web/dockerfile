@@ -3,6 +3,9 @@ ARG USER_ID
 ENV USER_ID=$USER_ID
 ARG USER_GID
 ENV USER_GID=$USER_GID
+ARG TZ=Europe/Moscow
+ENV TZ=$TZ
+ARG PHP_VERSION=74
 ARG NODE_VERSION=16
      RUN curl -sL https://rpm.nodesource.com/setup_${NODE_VERSION}.x | bash - && \
           rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
@@ -10,7 +13,6 @@ ARG NODE_VERSION=16
   RUN yum update -y
           #yum install -y epel-release && \
           #yum update -y
-     ARG PHP_VERSION=81
      RUN yum-config-manager --disable 'remi-php*' && \
           yum-config-manager --enable remi-php${PHP_VERSION} 
      RUN  yum -y install yum-utils \
@@ -32,7 +34,7 @@ ARG NODE_VERSION=16
           yum clean all
      RUN php -v; pecl install xdebug
      COPY --chown=apache:apache ./entrypoint.sh /
-     RUN  ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
+     RUN  ln -f -s /usr/share/zoneinfo/$TZ /etc/localtime && \
           groupmod --gid $USER_GID apache  && \
           usermod --uid $USER_ID apache && \
           mkdir -p /var/www/html/bx-site && \
@@ -72,6 +74,7 @@ ARG NODE_VERSION=16
         
      #EXPOSE 80
      #EXPOSE 443
+
      EXPOSE 8090
      #ENTRYPOINT [ "rm -f /var/run/*.pid"]
      CMD [ "/usr/bin/supervisord" ]
