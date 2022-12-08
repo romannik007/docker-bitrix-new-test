@@ -179,7 +179,7 @@ services:
         PMA_HOST: mysql
         PMA_PORT: 3306
         PMA_USER: root
-        PMA_PASSWORD: $MYSQL_ROOT_PASSWORD:-**Admin**}
+        PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD:-**Admin**}
 #       PMA_ABSOLUTE_URI: /phpmyadmin
 
     
