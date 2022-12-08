@@ -10,7 +10,7 @@
 
 - phpmyadmin доступен на 33333 порту
 
-- также можно сменить версию mysql в файле services/mysql/Dockerfile, при этом выполнить
+- также можно сменить версию mysql в файле .env, после этого выполнить
 
 `docker-compose up -d --build mysql`
 

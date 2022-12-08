@@ -1,4 +1,4 @@
-FROM 'percona/percona-xtradb-cluster:5.7'
+FROM percona/percona-xtradb-cluster:${MYSQL_VERSION:-5.7}
 ARG USER_ID
 ENV USER_ID=$USER_ID
 ARG USER_GID
