@@ -8,7 +8,13 @@
 
    `docker-compose up -d --build web`
 
+- phpmyadmin доступен на 33333 порту
 
+- также можно сменить версию mysql в файле services/mysql/Dockerfile, при этом выполнить
+
+`docker-compose up -d --build mysql`
+
+Переход на версию mysql желательно осуществлять через бэкап-восстановление
 
 1. **Чтобы** был доступ на редактирование файлов в проекте и на хосте и в контейнере:
    
@@ -51,7 +57,7 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
     
    ***`mkdir -m 777 -p ./volumes/www`***
 
-4. ***`docker-compose up -d --build --force-recreate`***
+4. ***`docker-compose up -d --build`***
 5.  **копируем** bitrixsetup.php или restore.php в папку ./volumes/www
     
       **`chmod -R 777 ./volumes/www`**
