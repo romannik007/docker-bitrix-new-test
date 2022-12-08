@@ -41,7 +41,9 @@ services:
         CLUSTER_NAME: ${CLUSTER_NAME:-bitrix-cluster}
         TZ: ${TZ:-Europe/Moscow}
       command: '--innodb_strict_mode=OFF --character-set-server=utf8 --collation-server=utf8_unicode_ci 
-                --skip-character-set-client-handshake --sql-mode='
+                --skip-character-set-client-handshake --sql-mode=
+                --transaction-isolation=READ-COMMITTED
+                --pxc_strict_mode=PERMISSIVE' #for percona extradb cluster
 
     web:
       build:
@@ -89,7 +91,7 @@ services:
           USER_ID: ${USER_ID:-1000}
           USER_GID: ${USER_GID:-1000}
           BITRIX_PORT: ${BITRIX_PORT:-80}
-          BITRIX_SSL_PORT: $BITRIX_SSL_PORT:-443
+          BITRIX_SSL_PORT: ${BITRIX_SSL_PORT:-443}
       ports:
         - ${BITRIX_PORT:-80}:80
         - ${BITRIX_SSL_PORT:-443}:443
@@ -103,8 +105,8 @@ services:
       environment:
         USER_ID: ${USER_ID:-1000}
         USER_GID: ${USER_GID:-1000}
-        BITRIX_PORT: $BITRIX_PORT:-80
-        BITRIX_SSL_PORT: $BITRIX_SSL_PORT:-443
+        BITRIX_PORT: ${BITRIX_PORT:-80}
+        BITRIX_SSL_PORT: ${BITRIX_SSL_PORT:-443}
       volumes:
         - ./services/web/logs/nginx:/var/log/nginx
         - ./services/web/nginx/config/nginx.conf:/etc/nginx/nginx.conf
@@ -177,7 +179,7 @@ services:
         PMA_HOST: mysql
         PMA_PORT: 3306
         PMA_USER: root
-        PMA_PASSWORD: $MYSQL_PASSWORD
+        PMA_PASSWORD: $MYSQL_ROOT_PASSWORD
 #       PMA_ABSOLUTE_URI: /phpmyadmin
 
     
