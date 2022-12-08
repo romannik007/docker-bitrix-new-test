@@ -16,13 +16,13 @@ services:
         context: ./services/mysql
         dockerfile: Dockerfile
         args: 
-          USER_ID: $USER_ID
-          USER_GID: $USER_GID
+          USER_ID: ${USER_ID:-1000}
+          USER_GID: ${USER_GID:-1000}
       #container_name: bx-mysql
-      user: $USER_ID:$USER_GID
+      user: ${USER_ID:-1000}:${USER_GID:-1000}
       hostname: mysql
       healthcheck:
-        test: "/usr/bin/mysql --user=root --password=${BX_MYSQL_ROOT_PASS} --execute \"SHOW DATABASES;\""
+        test: "/usr/bin/mysql --user=root --password=${MYSQL_ROOT_PASSWORD} --execute \"SHOW DATABASES;\""
         interval: 2s
         timeout: 20s
         retries: 10
@@ -31,11 +31,15 @@ services:
       ports:
         - "3306:3306"
       environment:
-        MYSQL_ROOT_PASSWORD: ${BX_MYSQL_ROOT_PASS}
-        MYSQL_DATABASE: ${BX_MYSQL_DB}
-        MYSQL_USER: bitrix
-        MYSQL_PASSWORD: ${BX_MYSQL_BITRIX_PASS}
-        TZ: Europe/Moscow
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-**Admin**}
+        MYSQL_DATABASE: ${MYSQL_DATABASE:-sitemanager}
+        MYSQL_USER: ${MYSQL_USER:-bitrix}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD:-**bitrix**}
+        XTRABACKUP_PASSWORD: ${XTRABACKUP_PASSWORD:-xpassword}
+        MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD:-1}
+        CLUSTER_JOIN: ${CLUSTER_JOIN:-}
+        CLUSTER_NAME: ${CLUSTER_NAME:-bitrix-cluster}
+        TZ: ${TZ:-Europe/Moscow}
       command: '--innodb_strict_mode=OFF --character-set-server=utf8 --collation-server=utf8_unicode_ci 
                 --skip-character-set-client-handshake --sql-mode='
 
@@ -44,9 +48,9 @@ services:
         context: ./services/web
         dockerfile: dockerfile
         args: 
-          USER_ID: $USER_ID
-          USER_GID: $USER_GID
-          PHP_VERSION: ${PHP_VERSION:-81}
+          USER_ID: ${USER_ID:-1000}
+          USER_GID: ${USER_GID:-1000}
+          PHP_VERSION: ${PHP_VERSION:-74}
       hostname: web
       #ports:
         #- 8088:80
@@ -59,18 +63,22 @@ services:
         - mysql
         - push
       volumes:
-        - ./services/web/logs/crond:/var/log/crond
-        - ./services/web/logs/xdebug:/var/log/xdebug
-        - ./services/web/logs/httpd:/var/log/httpd
-        - ./services/web/logs/php:/var/log/php
-        - ./services/web/logs/supervisor:/var/log/supervisor
+        - ${LOGS_PATH:-./services}/web/logs/crond:/var/log/crond
+        - ${LOGS_PATH:-./services}/web/logs/xdebug:/var/log/xdebug
+        - ${LOGS_PATH:-./services}/web/logs/httpd:/var/log/httpd
+        - ${LOGS_PATH:-./services}/web/logs/php:/var/log/php
+        - ${LOGS_PATH:-./services}/web/logs/supervisor:/var/log/supervisor
         - ./services/web/cron/bitrix:/etc/cron.d/bitrix
         - ./services/web/supervisor/supervisord.ini:/etc/supervisord.d/supervisord.ini
         - ./services/web/php.d/config/zx-bitrix.ini:/etc/php.d/zx-bitrix.ini
+        - ./services/web/httpd/config/conf/httpd.conf:/etc/httpd/conf/httpd.conf
+        - ./services/web/httpd/config/conf.d/default.conf:/etc/httpd/conf.d/default.conf
+        - ./services/web/httpd/config/conf.modules.d/00-mpm.conf:/etc/httpd/conf.modules.d/00-mpm.conf
+        - ./services/web/cron:/etc/cron.d
       #command: ["/root/entry-web.sh"]
       environment:
-        USER_ID: $USER_ID
-        USER_GID: $USER_GID
+        USER_ID: ${USER_ID:-1000}
+        USER_GID: ${USER_GID:-1000}
       entrypoint: [ "/entrypoint.sh" ]
       #command: ["/usr/bin/supervisord"]
     
@@ -78,13 +86,13 @@ services:
       build:
         context: ./services/web/nginx
         args: 
-          USER_ID: $USER_ID
-          USER_GID: $USER_GID
-          BITRIX_PORT: $BITRIX_PORT
-          BITRIX_SSL_PORT: $BITRIX_SSL_PORT
+          USER_ID: ${USER_ID:-1000}
+          USER_GID: ${USER_GID:-1000}
+          BITRIX_PORT: ${BITRIX_PORT:-80}
+          BITRIX_SSL_PORT: $BITRIX_SSL_PORT:-443
       ports:
-        - $BITRIX_PORT:80
-        - 443:443
+        - ${BITRIX_PORT:-80}:80
+        - ${BITRIX_SSL_PORT:-443}:443
         #открываем, если нужен доступ снаружи для push
         #- 8893-8895:8893-8895
       networks:
@@ -93,12 +101,15 @@ services:
       depends_on:
         - web
       environment:
-        USER_ID: $USER_ID
-        USER_GID: $USER_GID
-        BITRIX_PORT: $BITRIX_PORT
-        BITRIX_SSL_PORT: $BITRIX_SSL_PORT
+        USER_ID: ${USER_ID:-1000}
+        USER_GID: ${USER_GID:-1000}
+        BITRIX_PORT: $BITRIX_PORT:-80
+        BITRIX_SSL_PORT: $BITRIX_SSL_PORT:-443
       volumes:
         - ./services/web/logs/nginx:/var/log/nginx
+        - ./services/web/nginx/config/nginx.conf:/etc/nginx/nginx.conf
+        - ./services/web/nginx/config/sites-available:/etc/nginx/sites-available
+        - ./services/web/nginx/config/conf.d:/etc/nginx/.conf.d
       #entrypoint: [ "/docker-entrypoint.d/entry.sh" ]
       
 
@@ -119,13 +130,14 @@ services:
         dockerfile: dockerfile
         args: 
           USER_ID: $USER_ID
+          TZ: $TZ:-Europe/Moscow
       hostname: push
       environment:
-        USER_ID: $USER_ID
+        USER_ID: ${USER_ID:-1000}
       volumes:
         - redis-sock:/tmp/
         #- ./services/tmp/:/tmp/
-        - ./services/push/logs/:/var/log/
+        - ${LOGS_PATH:-./services}/push/logs/:/var/log/
         - ./services/push/supervisor/supervisord.ini:/etc/supervisord.d/supervisord.ini
       #ports:
         #- 8010-8015:8010-8015/tcp
@@ -149,7 +161,7 @@ services:
       restart:
         unless-stopped 
       volumes:
-        - ./services/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg
+        - ${LOGS_PATH:-./services}/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg
         - ./services/haproxy/ssl:/ssl
       networks:
         - bitrix
@@ -165,7 +177,7 @@ services:
         PMA_HOST: mysql
         PMA_PORT: 3306
         PMA_USER: root
-        PMA_PASSWORD: $BX_MYSQL_ROOT_PASS
+        PMA_PASSWORD: $MYSQL_PASSWORD
 #       PMA_ABSOLUTE_URI: /phpmyadmin
 
     

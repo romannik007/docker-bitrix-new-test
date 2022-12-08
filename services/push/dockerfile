@@ -1,6 +1,7 @@
 FROM centos:7
   ARG USER_ID=1000
   ENV USER_ID=$USER_ID
+  ARG TZ=Europe/Moscow
   COPY bitrix.repo /etc/yum.repos.d/bitrix.repo
   ARG NODE_VERSION=16
      RUN curl -sL https://rpm.nodesource.com/setup_${NODE_VERSION}.x | bash - && \
