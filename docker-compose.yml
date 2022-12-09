@@ -60,6 +60,8 @@ services:
         #- 8088:80
         #- 8893-8895:8893-8895/tcp
         #- 443:443
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4
@@ -83,10 +85,13 @@ services:
       environment:
         USER_ID: ${USER_ID:-1000}
         USER_GID: ${USER_GID:-1000}
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
       entrypoint: [ "/entrypoint.sh" ]
       #command: ["/usr/bin/supervisord"]
     
     nginx:
+      hostname: ${HOST:-nginx}
       build:
         context: ./services/web/nginx
         args: 
@@ -99,6 +104,8 @@ services:
         - ${BITRIX_SSL_PORT:-443}:443
         #открываем, если нужен доступ снаружи для push
         #- 8893-8895:8893-8895
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
       networks:
         - bitrix
   #          ipv4_address: 172.16.16.4
@@ -143,12 +150,15 @@ services:
         #- ./services/tmp/:/tmp/
         - ${LOGS_PATH:-./services}/push/logs/:/var/log/
         - ./services/push/supervisor/supervisord.ini:/etc/supervisord.d/supervisord.ini
+        - ./services/push/push-server-multi:/etc/sysconfig/push-server-multi
       #ports:
         #- 8010-8015:8010-8015/tcp
         #- 9010-9011:9010-9011/tcp
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
       depends_on:
         - redis
       entrypoint:  [ "/entrypoint.sh" ]
