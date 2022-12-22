@@ -1,8 +1,8 @@
 /volumes/
 !/volumes/.gitkeep
-/volumes/www/*
+/volumes/www*
 !/volumes/www/.gitkeep
-/volumes/mysql/*
+/volumes/mysql*/*
 !/volumes/mysql/.gitkeep
 /services/push/logs/*
 !/services/push/logs/.gitkeep

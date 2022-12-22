@@ -18,7 +18,7 @@ services:
         args: 
           USER_ID: ${USER_ID:-1000}
           USER_GID: ${USER_GID:-1000}
-          MYSQL_VERSION: ${MYSQL_VERSION:-5.7}
+          MYSQL_IMAGE: ${MYSQL_IMAGE:-mysql:8.0}
       #container_name: bx-mysql
       user: ${USER_ID:-1000}:${USER_GID:-1000}
       hostname: mysql
@@ -41,11 +41,7 @@ services:
         CLUSTER_JOIN: ${CLUSTER_JOIN:-}
         CLUSTER_NAME: ${CLUSTER_NAME:-bitrix-cluster}
         TZ: ${TZ:-Europe/Moscow}
-      command: '--innodb_strict_mode=OFF --character-set-server=utf8 --collation-server=utf8_unicode_ci 
-                --skip-character-set-client-handshake --sql-mode=
-                --transaction-isolation=READ-COMMITTED
-                --pxc_strict_mode=PERMISSIVE' #for percona extradb cluster
-
+      command: ${MYSQL_COMMAND}
     web:
       image: docker-bitrix-new-test-web:${PHP_VERSION:-74}
       build:
