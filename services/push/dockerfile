@@ -1,40 +1,11 @@
-FROM centos:7
+FROM node:16-alpine
   ARG USER_ID=1000
   ENV USER_ID=$USER_ID
   ARG TZ=Europe/Moscow
-  COPY bitrix.repo /etc/yum.repos.d/bitrix.repo
-  ARG NODE_VERSION=16
-     RUN curl -sL https://rpm.nodesource.com/setup_${NODE_VERSION}.x | bash - && \
-          rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-          rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-  RUN yum update -y
-  COPY ./entrypoint.sh /
-  RUN yum install -y \
-      bx-push-server \
-      initscripts \
-      mc \
-      net-tools \
-      sudo \
-      supervisor \
-    yum clean all && \
-    ln -f -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
-    groupadd -f bitrix && \
-    #useradd bitrix -u $USER_ID -g bitrix && \
-    usermod -u $USER_ID bitrix  && \
-    chmod +x /entrypoint.sh
-    #mkdir -p /var/log/push-server && \
-    #mkdir -p /var/log/supervisor 
-    #chmod -R 777 /var/log/push-server && \
-    #chmod -R 777 /var/log/supervisor && \
-    #chmod -R 777 /var/log/push-server/ && \
-    #chmod -R 777 /var/log/supervisor/ && \
-    #chmod -R 777 /etc/push-server    
   
-  #блок для установки из исходников
-  #RUN yum install -y python3 make wget
-  #RUN yum install -y nodejs gcc-c++
-  #RUN cd /opt && wget https://repos.1c-bitrix.ru/vm/push-server-0.2.2.tgz
-  #RUN cd /opt && npm install --production ./push-server-0.2.2.tgz
+  RUN apk add python3 make wget
+  RUN cd /opt && wget https://repo.bitrix.info/vm/push-server-0.3.0.tgz
+  RUN cd /opt && npm install --production ./push-server-0.3.0.tgz
   #RUN echo 'd /tmp/push-server 0770 apache apache -' > /etc/tmpfiles.d/push-server.conf
   
   COPY push-server-multi /etc/sysconfig/push-server-multi

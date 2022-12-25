@@ -1,82 +1,48 @@
-FROM centos:7
+ARG PHP_VER=8.0
+FROM php:${PHP_VER}-apache-buster
 ARG USER_ID
 ENV USER_ID=$USER_ID
 ARG USER_GID
 ENV USER_GID=$USER_GID
 ARG TZ=Europe/Moscow
 ENV TZ=$TZ
-ARG PHP_VERSION=74
 ARG NODE_VERSION=16
-     RUN curl -sL https://rpm.nodesource.com/setup_${NODE_VERSION}.x | bash - && \
-          rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-          rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-  RUN yum update -y
-          #yum install -y epel-release && \
-          #yum update -y
-     RUN yum-config-manager --disable 'remi-php*' && \
-          yum-config-manager --enable remi-php${PHP_VERSION} 
-     RUN  yum -y install yum-utils \
-          nodejs \
-          httpd \
-          supervisor \
-          php php-cli php-common \
-          php-devel php-fedora-autoloader php-gd \
-          php-imap php-json php-ldap php-mbstring \
-          php-mysqlnd php-opcache php-pdo \
-          php-pear php-pear-DB php-pecl-apcu \
-          php-pecl-apcu-bc php-pecl-geoip \
-          php-pecl-mcrypt php-pecl-memcache  \
-          php-pecl-ssh2 php-process php-pspell php-xml php-zipstream \
-          php-zip \
-          crontabs mc \
-          php-pecl-redis gd-devel httpd-mod_session net-tools && \
-          #pecl install xdebug
-          yum clean all
-     RUN php -v; yum install -y php-xdebug
-     COPY --chown=apache:apache ./entrypoint.sh /
+#     RUN curl -sL https://rpm.nodesource.com/setup_${NODE_VERSION}.x | bash - 
+     COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
+     RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install bash git autoconf cron fonts-freefont-ttf  libpq-dev libfreetype6-dev libfreetype6 graphviz build-essential zip unzip default-mysql-client
+     RUN install-php-extensions xdebug gd zlib
+     RUN install-php-extensions bcmath exif ffi gettext gmp igbinary imap intl ldap mbstring \
+         mysqli opcache pdo pdo_mysql pcntl pgsql pdo_pgsql pcov soap sqlite3 swoole redis readline xml zip
+#          nodejs \
+#          httpd \
+#          supervisor \
+#          php php-cli php-common \
+#          php-devel php-fedora-autoloader php-gd \
+#          php-imap php-json php-ldap php-mbstring \
+#          php-mysqlnd php-opcache php-pdo \
+#          php-pear php-pear-DB php-pecl-apcu \
+#          php-pecl-apcu-bc php-pecl-geoip \
+#          php-pecl-mcrypt php-pecl-memcache  \
+#          php-pecl-ssh2 php-process php-pspell php-xml php-zipstream \
+#          php-zip \
+#          crontabs mc \
+#          php-pecl-redis gd-devel httpd-mod_session net-tools && \
+#          #pecl install xdebug
+#          yum clean all
+
      RUN  ln -f -s /usr/share/zoneinfo/$TZ /etc/localtime && \
-          groupmod --gid $USER_GID apache  && \
-          usermod --uid $USER_ID apache && \
+          groupmod --gid $USER_GID www-data  && \
+          usermod --uid $USER_ID www-data && \
           mkdir -p /var/www/html/bx-site && \
-          chown apache:apache /var/www/html/bx-site && \
-          #groupadd apache && useradd -M nginx -g apache && \
-          #chown -R nginx:apache /var/www/html/bx-site && \
-          #groupadd bitrix -g 600 && \
-          #useradd bitrix -u $USER_ID -g 600 && \
-          #usermod bitrix -G root && \
-          mkdir -p /var/log/supervisor && \ 
-          mkdir -p /var/log/crond && \
-          mkdir -p /var/log/httpd && \
-          mkdir -p /var/log/nginx && \
-          mkdir -p /var/log/php && \
-          mkdir -p /var/log/xdebug && \
+          chown www-data:www-data /var/www/html/bx-site && \
           mkdir -p /home/bitrix/.bx_temp/sitemanager && \
-          chmod -R 777 /home/bitrix/.bx_temp/sitemanager \
-               /usr/lib64/php/modules/xdebug.so && \
+          chmod -R 777 /home/bitrix/.bx_temp/sitemanager && \
           mkdir -p /tmp/session && \
-          #chmod -R 777 /tmp/session && \
-          chown apache:apache /tmp/session && \
+          chown www-data:www-data /tmp/session && \
           mkdir -p /var/lib/php/session && \
-          #chmod -R 777 /var/lib/php/session && \
-          chown apache:apache /var/lib/php/session && \
+          chown www-data:www-data /var/lib/php/session && \
           mkdir -p /tmp/php_upload && \
           chmod -R 777 /tmp/php_upload && \
-          chown apache:apache /var/www/html/bx-site && \
-          chmod +x /entrypoint.sh
-    
-     COPY ./httpd/config/ /etc/httpd
-     COPY ./php.d/config/ /etc/php.d
-     COPY ./cron/ /etc/cron.d
-     COPY ./supervisor/ /etc/supervisord.d
-     #COPY --chown=$USER_ID:apache ./bitrixsetup.php /var/www/html/bx-site/bitrixsetup.php
-     #COPY --chown=$USER_ID:apache ./restore.php /var/www/html/bx-site/restore.php
-      
-        
-     #EXPOSE 80
-     #EXPOSE 443
-
-     EXPOSE 8090
-     #ENTRYPOINT [ "rm -f /var/run/*.pid"]
-     CMD [ "/usr/bin/supervisord" ]
+          chown www-data:www-data /var/www/html/bx-site
 
      

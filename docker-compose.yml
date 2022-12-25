@@ -43,14 +43,13 @@ services:
         TZ: ${TZ:-Europe/Moscow}
       command: ${MYSQL_COMMAND}
     web:
-      image: docker-bitrix-new-test-web:${PHP_VERSION:-74}
       build:
         context: ./services/web
         dockerfile: dockerfile
         args: 
           USER_ID: ${USER_ID:-1000}
           USER_GID: ${USER_GID:-1000}
-          PHP_VERSION: ${PHP_VERSION:-74}
+          PHP_VERSION: ${PHP_VERSION:-8.0}
       hostname: web
       #ports:
         #- 8088:80
@@ -71,11 +70,11 @@ services:
         - ${LOGS_PATH:-./services}/web/logs/php:/var/log/php
         - ${LOGS_PATH:-./services}/web/logs/supervisor:/var/log/supervisor
         - ./services/web/cron/bitrix:/etc/cron.d/bitrix
-        - ./services/web/supervisor/supervisord.ini:/etc/supervisord.d/supervisord.ini
-        - ./services/web/php.d/config/zx-bitrix.ini:/etc/php.d/zx-bitrix.ini
-        - ./services/web/httpd/config/conf/httpd.conf:/etc/httpd/conf/httpd.conf
-        - ./services/web/httpd/config/conf.d/default.conf:/etc/httpd/conf.d/default.conf
-        - ./services/web/httpd/config/conf.modules.d/00-mpm.conf:/etc/httpd/conf.modules.d/00-mpm.conf
+        - ./services/web/php.d/config/zx-bitrix.ini:/usr/local/etc/php/conf.d/zx-bitrix.ini
+        - ./services/web/php.d/config/10-opcache.ini:/usr/local/etc/php/conf.d/10-opcache.ini
+        #- ./services/web/httpd/config/conf/httpd.conf:/etc/apache2/apache2.conf
+        - ./services/web/httpd/config/conf.d/default.conf:/etc/apache2/sites-enabled/000-default.conf
+        #- ./services/web/httpd/config/conf.modules.d/00-mpm.conf:/etc/apache2/conf.modules.d/00-mpm.conf
         - ./services/web/cron:/etc/cron.d
       #command: ["/root/entry-web.sh"]
       environment:
@@ -83,7 +82,7 @@ services:
         USER_GID: ${USER_GID:-1000}
       extra_hosts:
         - "host.docker.internal:host-gateway"
-      entrypoint: [ "/entrypoint.sh" ]
+      #entrypoint: [ "/entrypoint.sh" ]
       #command: ["/usr/bin/supervisord"]
     
     nginx:
