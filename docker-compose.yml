@@ -116,7 +116,7 @@ services:
         - ./services/web/logs/nginx:/var/log/nginx
         - ./services/web/nginx/config/nginx.conf:/etc/nginx/nginx.conf
         - ./services/web/nginx/config/sites-available:/etc/nginx/sites-available
-        - ./services/web/nginx/config/conf.d:/etc/nginx/.conf.d
+        - ./services/web/nginx/config/conf.d:/etc/nginx/conf.d
       #entrypoint: [ "/docker-entrypoint.d/entry.sh" ]
       
 
