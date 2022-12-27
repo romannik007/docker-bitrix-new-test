@@ -11,7 +11,7 @@ services:
     cap_add:
       - NET_ADMIN
     volumes:
-      - www:/ftp
+      - ${BITRIX_PATH:-./volumes/www/}:/ftp
       - ./services/ftp/vsftpd.conf /etc/vsftpd/vsftpd.conf
     ports:
       - "$FTP_PORT:21"
@@ -25,14 +25,14 @@ services:
   web:
     userns_mode: 'host'
     volumes:
-      - www:/var/www/html/bx-site/
+        - ${BITRIX_PATH:-./volumes/www/}:/var/www/html/bx-site/
       #- ./bitrixsetup.php:/var/www/html/bx-site/bitrixsetup.php
       #- ./restore.php:/var/www/html/bx-site/restore.php
    
   nginx:
     userns_mode: 'host'
     volumes:
-      - www:/var/www/html/bx-site/
+        - ${BITRIX_PATH:-./volumes/www/}:/var/www/html/bx-site/
 
 volumes:
   mysql:

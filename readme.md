@@ -6,7 +6,7 @@
 
 Проект поддерживает весрии php 7.3 - 8.1, для этого в файле .env изменяем перменную PHP_VERSION и выполняем 
 
-   `docker-compose up -d --build web`
+   `docker-compose up -d --build`
 
 - phpmyadmin доступен на 33333 порту
 
@@ -53,9 +53,7 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
 
 2. deleted
-3. ***`mkdir -m 777 -p ./volumes/mysql`***
-    
-   ***`mkdir -m 777 -p ./volumes/www`***
+3. deleted
 
 4. ***`docker-compose up -d --build`***
 5.  **копируем** bitrixsetup.php или restore.php в папку ./volumes/www

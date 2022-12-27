@@ -2,9 +2,9 @@ version: '3.8'
 services:
     mysql:
       volumes:
-        - ./volumes/mysql:/var/lib/mysql
+        -  ./volumes/mysql:/var/lib/mysql
         #- ./services/mysql/my.cnf.d/zbx-custom-bin.cnf:/etc/my.cnf.d/mysqld.cnf:ro
-        - ./services/mysql/log/:/var/log
+        -  ${LOGS_PATH:-./services/mysql/log/}:/var/log
     
     web:
       volumes:
