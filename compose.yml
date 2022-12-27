@@ -152,7 +152,7 @@ services:
         dockerfile: ./dockerfile
         target: install
         args: 
-          TZ: $TZ:-Europe/Moscow
+          TZ: ${TZ:-Europe/Moscow}
           NODE_VERSION: ${NODE_VERSION:-16}
           REDIS_SOCK: ${REDIS_SOCK:-tcp\://redis\:6379}
           WS_HOST: ${WS_HOST:-push_pub}
@@ -168,7 +168,7 @@ services:
         dockerfile: ./dockerfile
         target: install
         args: 
-          TZ: $TZ:-Europe/Moscow
+          TZ: ${TZ:-Europe/Moscow}
           NODE_VERSION: ${NODE_VERSION:-16}
           REDIS_SOCK: ${REDIS_SOCK:-tcp\://redis\:6379}
           WS_HOST: ${WS_HOST:-push_sub}

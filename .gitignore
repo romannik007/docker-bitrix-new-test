@@ -1,9 +1,9 @@
 /volumes/
 !/volumes/.gitkeep
 /volumes/www*
-!/volumes/www/.gitkeep
+!/volumes/www/.gitignore
 /volumes/mysql*/*
-!/volumes/mysql/.gitkeep
+!/volumes/mysql/.gitignore
 /services/push/logs/*
 !/services/push/logs/.gitkeep
 /services/web/logs/*
