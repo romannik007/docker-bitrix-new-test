@@ -1,4 +1,52 @@
 version: '3.8'
+x-php-config: &php-config
+      build:
+        context: ./services/web
+        dockerfile: dockerfile
+        args: 
+          USER_ID: ${USER_ID:-1000}
+          USER_GID: ${USER_GID:-1000}
+          PHP_VERSION: ${PHP_VERSION:-8.0}
+      hostname: web
+      #ports:
+        #- 8088:80
+        #- 8893-8895:8893-8895/tcp
+        #- 443:443
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      networks:
+        - bitrix
+#          ipv4_address: 172.16.16.4
+      depends_on:
+        - mysql
+        - push_pub
+        - push_sub
+      volumes:
+        - ${LOGS_PATH:-./services}/web/logs/xdebug:/var/log/xdebug
+        - ${LOGS_PATH:-./services}/web/logs/php:/var/log/php
+        - ./services/web/php.d/config/zx-bitrix.ini:/usr/local/etc/php/conf.d/zx-bitrix.ini
+        - ./services/web/php.d/config/10-opcache.ini:/usr/local/etc/php/conf.d/10-opcache.ini
+        - ./services/web/httpd/config/conf.d/default.conf:/etc/apache2/sites-enabled/000-default.conf
+        #- ./services/web/httpd/config/conf.modules.d/00-mpm.conf:/etc/apache2/conf.modules.d/00-mpm.conf
+        - ./services/web/cron:/etc/cron.d
+      environment:
+        USER_ID: ${USER_ID:-1000}
+        USER_GID: ${USER_GID:-1000}
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+
+x-push: &push-config
+      volumes:
+        - ${LOGS_PATH:-./services}/push/logs/:/var/log/push-server/
+        - ./services/push/push-server-multi:/etc/sysconfig/push-server-multi
+      networks:
+        - bitrix
+#          ipv4_address: 172.16.16.4
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      depends_on:
+        - redis
+
 services:
     xtrabackup:
       image: perconalab/percona-xtrabackup:2.4
@@ -42,49 +90,18 @@ services:
         CLUSTER_NAME: ${CLUSTER_NAME:-bitrix-cluster}
         TZ: ${TZ:-Europe/Moscow}
       command: ${MYSQL_COMMAND}
-    web:
-      build:
-        context: ./services/web
-        dockerfile: dockerfile
-        args: 
-          USER_ID: ${USER_ID:-1000}
-          USER_GID: ${USER_GID:-1000}
-          PHP_VERSION: ${PHP_VERSION:-8.0}
-      hostname: web
-      #ports:
-        #- 8088:80
-        #- 8893-8895:8893-8895/tcp
-        #- 443:443
-      extra_hosts:
-        - "host.docker.internal:host-gateway"
-      networks:
-        - bitrix
-#          ipv4_address: 172.16.16.4
-      depends_on:
-        - mysql
-        - push
-      volumes:
-        - ${LOGS_PATH:-./services}/web/logs/crond:/var/log/crond
-        - ${LOGS_PATH:-./services}/web/logs/xdebug:/var/log/xdebug
-        - ${LOGS_PATH:-./services}/web/logs/httpd:/var/log/httpd
-        - ${LOGS_PATH:-./services}/web/logs/php:/var/log/php
-        - ${LOGS_PATH:-./services}/web/logs/supervisor:/var/log/supervisor
-        - ./services/web/cron/bitrix:/etc/cron.d/bitrix
-        - ./services/web/php.d/config/zx-bitrix.ini:/usr/local/etc/php/conf.d/zx-bitrix.ini
-        - ./services/web/php.d/config/10-opcache.ini:/usr/local/etc/php/conf.d/10-opcache.ini
-        #- ./services/web/httpd/config/conf/httpd.conf:/etc/apache2/apache2.conf
-        - ./services/web/httpd/config/conf.d/default.conf:/etc/apache2/sites-enabled/000-default.conf
-        #- ./services/web/httpd/config/conf.modules.d/00-mpm.conf:/etc/apache2/conf.modules.d/00-mpm.conf
-        - ./services/web/cron:/etc/cron.d
-      #command: ["/root/entry-web.sh"]
-      environment:
-        USER_ID: ${USER_ID:-1000}
-        USER_GID: ${USER_GID:-1000}
-      extra_hosts:
-        - "host.docker.internal:host-gateway"
-      #entrypoint: [ "/entrypoint.sh" ]
-      #command: ["/usr/bin/supervisord"]
     
+    web:
+      <<: *php-config
+
+
+    cron:
+      <<: *php-config
+      volumes:
+        #- ./services/web/cron/bitrix:/var/spool/cron/crontabs/root
+        - ./services/web/cron/bitrix:/etc/cron.d/bitrix
+      entrypoint: cron -L 8 -f 
+
     nginx:
       hostname: ${HOST:-nginx}
       build:
@@ -130,34 +147,39 @@ services:
         #- ./services/tmp/:/tmp/
         - ./services/redis/config/redis.conf:/usr/local/etc/redis/redis.conf 
     
-    push:
+    push_pub:
+      <<: *push-config
       build:
-        context: ./services/push
-        dockerfile: dockerfile
+        context: ./services/push/
+        dockerfile: ./dockerfile
+        target: install
         args: 
-          USER_ID: ${USER_ID:-1000}
           TZ: $TZ:-Europe/Moscow
-      hostname: push
+          NODE_VERSION: ${NODE_VERSION:-16}
+          REDIS_SOCK: ${REDIS_SOCK:-tcp\://redis\:6379}
+          WS_HOST: ${WS_HOST:-push_pub}
       environment:
-        USER_ID: ${USER_ID:-1000}
-      volumes:
-        - redis-sock:/tmp/
-        #- ./services/tmp/:/tmp/
-        - ${LOGS_PATH:-./services}/push/logs/:/var/log/
-        - ./services/push/supervisor/supervisord.ini:/etc/supervisord.d/supervisord.ini
-        - ./services/push/push-server-multi:/etc/sysconfig/push-server-multi
-      #ports:
-        #- 8010-8015:8010-8015/tcp
-        #- 9010-9011:9010-9011/tcp
-      networks:
-        - bitrix
-#          ipv4_address: 172.16.16.4
-      extra_hosts:
-        - "host.docker.internal:host-gateway"
-      depends_on:
-        - redis
-      entrypoint:  [ "/entrypoint.sh" ]
+        REDIS_SOCK: ${REDIS_SOCK:-tcp\://redis\:6379}
+        WS_HOST: ${WS_HOST:-push_pub}
+      command: ["node", "/opt/push-server/server.js", "--config", "/etc/push-server/push-server-pub-9010.json"]
     
+    push_sub:
+      <<: *push-config
+      build:
+        context: ./services/push/
+        dockerfile: ./dockerfile
+        target: install
+        args: 
+          TZ: $TZ:-Europe/Moscow
+          NODE_VERSION: ${NODE_VERSION:-16}
+          REDIS_SOCK: ${REDIS_SOCK:-tcp\://redis\:6379}
+          WS_HOST: ${WS_HOST:-push_sub}
+      environment:
+        REDIS_SOCK: ${REDIS_SOCK:-tcp\://redis\:6379}
+        WS_HOST: ${WS_HOST:-push_sub}
+      command: ["node", "/opt/push-server/server.js", "--config", "/etc/push-server/push-server-sub-8010.json"]
+
+
     haproxy:
       image: haproxy:alpine
       profiles: 

@@ -1,18 +1,85 @@
-FROM node:16-alpine
-  ARG USER_ID=1000
+ARG NODE_VERSION=${NODE_VERSION:-18} 
+
+FROM node:${NODE_VERSION}-alpine as install
+  WORKDIR /opt
+  ADD https://repo.bitrix.info/vm/push-server-0.3.0.tgz /opt
+  RUN apk add python3 make gcc g++ libc-dev shadow bash && \
+    npm install --production ./push-server-0.3.0.tgz && \
+    ls -al
+
+  ARG USER_ID=${USER_ID:-1000}
   ENV USER_ID=$USER_ID
-  ARG TZ=Europe/Moscow
-  
-  RUN apk add python3 make wget
-  RUN cd /opt && wget https://repo.bitrix.info/vm/push-server-0.3.0.tgz
-  RUN cd /opt && npm install --production ./push-server-0.3.0.tgz
-  #RUN echo 'd /tmp/push-server 0770 apache apache -' > /etc/tmpfiles.d/push-server.conf
-  
+  ARG USER_GID=${USER_GID:-1000}
+  ENV USER_GID=$USER_GID
+  ARG USER
+  ARG GROUP
+  ARG WS_PORT
+  ARG WS_HOST
+  ARG SECURITY_KEY
+  ARG TZ=Europe/Moscow 
+  ARG REDIS_SOCK=${REDIS_SOCK:-tcp\://redis\:6379}
+  ENV REDIS_SOCK=${REDIS_SOCK}
+  RUN groupmod -n bitrix node && usermod -l bitrix node
+  #COPY --from=install /opt/node_modules/ .
+  RUN ln -sf /opt/node_modules/push-server/logs /var/log/push-server && \
+      ln -sf /opt/node_modules/push-server/etc/push-server /etc/push-server && \
+      cp /opt/node_modules/push-server/etc/init.d/push-server-multi /usr/local/bin/push-server-multi && \
+    mkdir -p /etc/sysconfig && \
+    ln -sf /opt/node_modules/push-server /opt/push-server && \
+    chown bitrix:bitrix /var/log/push-server
   COPY push-server-multi /etc/sysconfig/push-server-multi
-  COPY ./supervisor/supervisord.ini /etc/supervisord.d/supervisord.ini
-  EXPOSE 8010-8015
-  EXPOSE 9010-9011
-  #EXPOSE 8895
+  RUN /usr/local/bin/push-server-multi configs pub
+  RUN /usr/local/bin/push-server-multi configs sub
+  USER bitrix
+
+
+FROM centos:7 as cache
+  ARG NODE_VERSION=${NODE_VERSION:-18}
+  WORKDIR /opt/node_modules
+  RUN curl -sL https://rpm.nodesource.com/setup_${NODE_VERSION}.x | bash - && \
+          yum install -y nodejs && \
+          yum update -y && \
+          yum install -y \
+            yum-utils \
+            initscripts \
+            mc \
+            net-tools
+FROM cache
+  ARG USER_ID=${USER_ID:-1000}
+  ENV USER_ID=$USER_ID
+  ARG USER_GID=${USER_GID:-1000}
+  ENV USER_GID=$USER_GID
+  ARG USER
+  ARG GROUP
+  ARG WS_PORT
+  ARG WS_HOST
+  ARG SECURITY_KEY
+  ARG TZ=Europe/Moscow 
+  ARG REDIS_SOCK=${REDIS_SOCK:-tcp\://redis\:6379}
+  ENV REDIS_SOCK=${REDIS_SOCK}
+  
+  WORKDIR /opt/node_modules
+  RUN groupadd -g $USER_GID bitrix && useradd -m -g $USER_GID -u $USER_ID bitrix
+          
+#  RUN apk add python3 make wget
+#  RUN cd /opt && wget https://repo.bitrix.info/vm/push-server-0.3.0.tgz && \
+#    npm install --production ./push-server-0.3.0.tgz && \
+#    ln -sf /opt/node_modules/push-server/etc/push-server /etc/push-server
+#  COPY push-server-multi /etc/sysconfig/push-server-multi
+#  EXPOSE 8010-8015
+#  EXPOSE 9010-9011
+  EXPOSE 8895
   #EXPOSE 80
-  CMD [ "/entrypoint.sh" ]
+  #ENTRYPOINT [ "node /opt/push-server/server.js --config /etc/push-server/push-server-sub-8010.json"]
+  COPY --from=install /opt/node_modules/ .
+  RUN ln -sf /opt/node_modules/push-server/logs /var/log/push-server && \
+      ln -sf /opt/node_modules/push-server/etc/push-server /etc/push-server && \
+      cp /opt/node_modules/push-server/etc/init.d/push-server-multi /usr/local/bin/push-server-multi && \
+    mkdir -p /etc/sysconfig && \
+    ln -sf /opt/node_modules/push-server /opt/push-server && \
+    chown bitrix:bitrix /var/log/push-server
+  COPY push-server-multi /etc/sysconfig/push-server-multi
+  RUN /usr/local/bin/push-server-multi configs pub
+  RUN /usr/local/bin/push-server-multi configs sub
+  USER bitrix
 

@@ -9,7 +9,11 @@ services:
     web:
       volumes:
         - ${BITRIX_PATH:-./volumes/www/}:/var/www/html/bx-site/
-   
+    
+    cron:
+      volumes:
+        - ${BITRIX_PATH:-./volumes/www/}:/var/www/html/bx-site/
+    
     nginx:
       volumes:
         - ${BITRIX_PATH:-./volumes/www/}:/var/www/html/bx-site/

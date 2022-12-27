@@ -13,6 +13,7 @@ ARG NODE_VERSION=16
      RUN install-php-extensions xdebug gd zlib
      RUN install-php-extensions bcmath exif ffi gettext gmp igbinary imap intl ldap mbstring \
          mysqli opcache pdo pdo_mysql pcntl pgsql pdo_pgsql pcov soap sqlite3 swoole redis readline xml zip
+     RUN install-php-extensions pecl-apcu memcache sockets
 #          nodejs \
 #          httpd \
 #          supervisor \
@@ -44,5 +45,7 @@ ARG NODE_VERSION=16
           mkdir -p /tmp/php_upload && \
           chmod -R 777 /tmp/php_upload && \
           chown www-data:www-data /var/www/html/bx-site
+
+     COPY ./cron/bitrix /etc/cron.d/bitrix
 
      
