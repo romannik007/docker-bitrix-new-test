@@ -7,7 +7,6 @@ x-php-config: &php-config
           USER_ID: ${USER_ID:-1000}
           USER_GID: ${USER_GID:-1000}
           PHP_VERSION: ${PHP_VERSION:-8.0}
-      hostname: web
       #ports:
         #- 8088:80
         #- 8893-8895:8893-8895/tcp
@@ -28,7 +27,6 @@ x-php-config: &php-config
         - ./services/web/php.d/config/10-opcache.ini:/usr/local/etc/php/conf.d/10-opcache.ini
         - ./services/web/httpd/config/conf.d/default.conf:/etc/apache2/sites-enabled/000-default.conf
         #- ./services/web/httpd/config/conf.modules.d/00-mpm.conf:/etc/apache2/conf.modules.d/00-mpm.conf
-        - ./services/web/cron:/etc/cron.d
       environment:
         USER_ID: ${USER_ID:-1000}
         USER_GID: ${USER_GID:-1000}
@@ -97,9 +95,9 @@ services:
 
     cron:
       <<: *php-config
-      volumes:
-        #- ./services/web/cron/bitrix:/var/spool/cron/crontabs/root
-        - ./services/web/cron/bitrix:/etc/cron.d/bitrix
+      #volumes:
+        #- ${LOGS_PATH:-./services}/web/logs/crond/:/var/mail/
+        #- ./services/web/cron/:/etc/cron.d
       entrypoint: cron -L 8 -f 
 
     nginx:

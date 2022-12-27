@@ -1,4 +1,3 @@
 SHELL=/bin/bash
 
 * * * * * www-data /usr/local/bin/php -f /var/www/html/bx-site/bitrix/modules/main/tools/cron_events.php
-
