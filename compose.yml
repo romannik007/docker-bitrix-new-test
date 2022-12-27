@@ -141,7 +141,7 @@ services:
       networks:
         - bitrix
       volumes:
-        - redis-sock:/tmp/
+        #- redis-sock:/tmp/
         #- ./services/tmp/:/tmp/
         - ./services/redis/config/redis.conf:/usr/local/etc/redis/redis.conf 
     
@@ -154,10 +154,10 @@ services:
         args: 
           TZ: ${TZ:-Europe/Moscow}
           NODE_VERSION: ${NODE_VERSION:-16}
-          REDIS_SOCK: ${REDIS_SOCK:-tcp\://redis\:6379}
+          REDIS_SOCK: ${REDIS_SOCK:-redis\://redis\:6379}
           WS_HOST: ${WS_HOST:-push_pub}
       environment:
-        REDIS_SOCK: ${REDIS_SOCK:-tcp\://redis\:6379}
+        REDIS_SOCK: ${REDIS_SOCK:-redis\://redis\:6379}
         WS_HOST: ${WS_HOST:-push_pub}
       command: ["node", "/opt/push-server/server.js", "--config", "/etc/push-server/push-server-pub-9010.json"]
     
@@ -170,10 +170,10 @@ services:
         args: 
           TZ: ${TZ:-Europe/Moscow}
           NODE_VERSION: ${NODE_VERSION:-16}
-          REDIS_SOCK: ${REDIS_SOCK:-tcp\://redis\:6379}
+          REDIS_SOCK: ${REDIS_SOCK:-redis\://redis\:6379}
           WS_HOST: ${WS_HOST:-push_sub}
       environment:
-        REDIS_SOCK: ${REDIS_SOCK:-tcp\://redis\:6379}
+        REDIS_SOCK: ${REDIS_SOCK:-redis\://redis\:6379}
         WS_HOST: ${WS_HOST:-push_sub}
       command: ["node", "/opt/push-server/server.js", "--config", "/etc/push-server/push-server-sub-8010.json"]
 
