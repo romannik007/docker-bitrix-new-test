@@ -6,7 +6,7 @@ x-php-config: &php-config
         args: 
           USER_ID: ${USER_ID:-1000}
           USER_GID: ${USER_GID:-1000}
-          PHP_VERSION: ${PHP_VERSION:-8.0}
+          PHP_VER: ${PHP_VER:-8.0}
       #ports:
         #- 8088:80
         #- 8893-8895:8893-8895/tcp
