@@ -1,8 +1,8 @@
 Выполнять в следующей последовательности:
 
-Все настройки окружения произведены со страницы *https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=32&CHAPTER_ID=020916&LESSON_PATH=3903.4862.20866.20916*
+Все настройки окружения произведены со страницы *https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=32&CHAPTER_ID=05360&LESSON_PATH=3903.4862.20866.5360*
 
-Файлы конфигурации взяты отсюда *https://dev.1c-bitrix.ru/docs/chm_files/redhat8.zip*
+Файлы конфигурации взяты отсюда *https://dev.1c-bitrix.ru/docs/chm_files/redhat8.zip* (можно взять отсюда https://dev.1c-bitrix.ru/docs/chm_files/debian.zip)
 
 Проект поддерживает весрии php 7.3 - 8.1, для этого в файле .env изменяем перменную PHP_VERSION и выполняем 
 
