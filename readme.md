@@ -4,7 +4,7 @@
 
 Файлы конфигурации взяты отсюда *https://dev.1c-bitrix.ru/docs/chm_files/redhat8.zip* (можно взять отсюда https://dev.1c-bitrix.ru/docs/chm_files/debian.zip)
 
-Проект поддерживает весрии php 7.3 - 8.1, для этого в файле .env изменяем перменную PHP_VERSION и выполняем 
+Проект поддерживает весрии php 7.3 - 8.1, для этого в файле .env изменяем перменную PHP_VER и выполняем 
 
    `docker-compose up -d --build`
 
