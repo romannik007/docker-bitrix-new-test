@@ -21,6 +21,7 @@
    выполним на своей системе 
    
    *`id -u`* - USER_ID
+   
    *`id -g`* - USER_GID
    
 
@@ -128,12 +129,12 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 **Дополнительно**:
 - в файле .env содержатся данные для подключения к mysql,
   логин и пароль пользователя bitrix из env используем только при чистой установке битрикс
+  REDIS_SOCK можно не менять, он работает по сети
 - в папках **services/web/httpd, services/web/nginx, services/web/php** содержатся файлы для кастомных настроек
 - services/bitrix-set
-- логи apache, nginx и cron в папке **services/<сервис>/logs**
+- логи nginx, php, push/pull в папке **services/<сервис>/logs**, логи apache смотрим `docker compose logs -t web`
 - адрес сервера БД - **mysql** (указываем для подключения)
 
-- ***`docker-compose up -d --build`***  - запуск только первый раз или при изменении конфигов сервисов, далее уже запускаем *docker-compose up -d* или ***`docker-compose start`*** (вэбка доступна по порту 80 или 443, mysql - 3306)
 - ***`docker exec -ti <сервис> /bin/bash`*** - подключиться к контенеру в баш )
 - 
 Setting boundaries for WSL2
