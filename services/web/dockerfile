@@ -9,7 +9,7 @@ ENV TZ=$TZ
      COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
      RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install bash git autoconf cron fonts-freefont-ttf  libpq-dev libfreetype6-dev libfreetype6 graphviz build-essential zip unzip default-mysql-client
      RUN install-php-extensions bcmath exif ffi gettext gmp igbinary imap intl ldap mbstring \
-         mysqli opcache pdo pdo_mysql pcntl pgsql pdo_pgsql pcov soap sqlite3 swoole redis readline xml zip memcache sockets xdebug gd zlib
+         mysqli opcache pdo pdo_mysql pcntl pgsql pdo_pgsql pcov soap sqlite3 swoole redis readline xml zip memcache sockets gd xdebug-3.1.1 zlib
      RUN a2enmod * -q || true && \
           a2dismod dav_fs dav dav_lock -q || true
 
