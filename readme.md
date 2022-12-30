@@ -128,7 +128,8 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
 **Дополнительно**:
 - в файле .env содержатся данные для подключения к mysql,
-  логин и пароль пользователя bitrix из env используем только при чистой установке битрикс
+  логин и пароль пользователя bitrix из env используем только при чистой установке битрикс.
+
   REDIS_SOCK можно не менять, он работает по сети
 - в папках **services/web/httpd, services/web/nginx, services/web/php** содержатся файлы для кастомных настроек
 - services/bitrix-set
