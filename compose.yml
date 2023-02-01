@@ -30,8 +30,6 @@ x-php-config: &php-config
       environment:
         USER_ID: ${USER_ID:-1000}
         USER_GID: ${USER_GID:-1000}
-      extra_hosts:
-        - "host.docker.internal:host-gateway"
 
 x-push: &push-config
       volumes:
