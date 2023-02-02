@@ -4,6 +4,8 @@ mkdir -p /var/log/nginx
 chmod -R 777 /var/log
 mkdir -p /home/bitrix/.bx_temp/sitemanager
 chmod -R 777 /home/bitrix/.bx_temp/sitemanager
+groupmod --gid $USER_GID nginx  && \
+usermod --uid $USER_ID nginx
 #sed -i "s/\$host;/\$host:$BITRIX_PORT;/g" /etc/nginx/sites-available/default.conf
 
 

@@ -12,7 +12,7 @@ ENV TZ=$TZ
          mysqli opcache pdo pdo_mysql pcntl pgsql pdo_pgsql pcov soap sqlite3 swoole redis readline xml zip memcache sockets gd xdebug-3.1.1 zlib
      RUN a2enmod * -q || true && \
           a2dismod dav_fs dav dav_lock -q || true
-
+     COPY entrypoint.sh /entrypoint.sh
      RUN  ln -f -s /usr/share/zoneinfo/$TZ /etc/localtime && \
           groupmod --gid $USER_GID www-data  && \
           usermod --uid $USER_ID www-data && \
@@ -26,7 +26,8 @@ ENV TZ=$TZ
           chown www-data:www-data /var/lib/php/session && \
           mkdir -p /tmp/php_upload && \
           chmod -R 777 /tmp/php_upload && \
-          chown www-data:www-data /var/www/html/bx-site 
-     COPY ./cron/bitrix /etc/cron.d/bitrix
+          chown www-data:www-data /var/www/html/bx-site && \
+          chmod +x /entrypoint.sh
 
+     COPY ./cron/bitrix /etc/cron.d/bitrix
      
