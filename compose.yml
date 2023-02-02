@@ -96,7 +96,7 @@ services:
       #volumes:
         #- ${LOGS_PATH:-./services}/web/logs/crond/:/var/mail/
         #- ./services/web/cron/:/etc/cron.d
-      entrypoint: cron -L 8 -f 
+      entrypoint: cron -L 8 -f
 
     nginx:
       hostname: ${HOST:-nginx}
@@ -105,11 +105,8 @@ services:
         args: 
           USER_ID: ${USER_ID:-1000}
           USER_GID: ${USER_GID:-1000}
-          BITRIX_PORT: ${BITRIX_PORT:-80}
-          BITRIX_SSL_PORT: ${BITRIX_SSL_PORT:-443}
-      ports:
-        - ${BITRIX_PORT:-80}:80
-        - ${BITRIX_SSL_PORT:-443}:443
+          
+      
         #открываем, если нужен доступ снаружи для push
         #- 8893-8895:8893-8895
       extra_hosts:
@@ -122,16 +119,33 @@ services:
       environment:
         USER_ID: ${USER_ID:-1000}
         USER_GID: ${USER_GID:-1000}
-        BITRIX_PORT: ${BITRIX_PORT:-80}
-        BITRIX_SSL_PORT: ${BITRIX_SSL_PORT:-443}
       volumes:
         - ./services/web/logs/nginx:/var/log/nginx
         - ./services/web/nginx/config/nginx.conf:/etc/nginx/nginx.conf
         - ./services/web/nginx/config/sites-available:/etc/nginx/sites-available
         - ./services/web/nginx/config/conf.d:/etc/nginx/conf.d
       #entrypoint: [ "/docker-entrypoint.d/entry.sh" ]
-      
-
+    proxy:
+      image: nginx:alpine
+      depends_on:
+        - nginx
+      volumes:
+        - ./services/web/nginx/proxy/nginx.conf:/etc/nginx/templates/default.conf.template     
+        - ./services/web/nginx/proxy/maps.conf:/etc/nginx/conf.d/maps.conf
+        - ./services/web/nginx/proxy/upstreams.conf:/etc/nginx/conf.d/upstreams.conf
+        # ./services/web/nginx/proxy/im_subscrider.conf:/etc/nginx/conf.d/im_subscrider.conf
+        - ./services/web/nginx/proxy/ssl:/etc/nginx/ssl
+      environment:
+        BITRIX_PORT: ${BITRIX_PORT:-80}
+        BITRIX_SSL_PORT: ${BITRIX_SSL_PORT:-443}
+        DOMAIN: ${HOST:-bitrix1.home.loc}
+      ports:
+        - ${BITRIX_PORT:-80}:80
+        - ${BITRIX_SSL_PORT:-443}:443
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      networks:
+        - bitrix
     redis:
       build: 
         context: ./services/redis

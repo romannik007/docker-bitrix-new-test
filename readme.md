@@ -4,6 +4,12 @@
 
 Файлы конфигурации взяты отсюда *https://dev.1c-bitrix.ru/docs/chm_files/redhat8.zip* (можно взять отсюда https://dev.1c-bitrix.ru/docs/chm_files/debian.zip)
 
+Перед запуском выполним:
+
+- `cp .env.example .env` Это необходимо для внесения изменений в переменные, такие, как версия php, mysql и тп (не обязятельная процедура, так как все переменные определены в compose файлах).
+- можно сгенерировать свои сертификаты с помощью файла services/web/nginx/proxy/gen_ssl.sh (дефолтые сертификаты в репозитории уже имеются)
+
+
 Проект поддерживает весрии php 7.3 - 8.1, для этого в файле .env изменяем перменную PHP_VER и выполняем 
 
    `docker-compose up -d --build`
@@ -12,7 +18,7 @@
 
 - также можно сменить версию mysql в файле .env, после этого выполнить
 
-`docker-compose up -d --build mysql`
+   `docker-compose up -d --build mysql`
 
 Переход на версию mysql желательно осуществлять через бэкап-восстановление
 
@@ -70,7 +76,7 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
       Данные для подключения к БД пописаны в .env
 
       
-6. Вэб доступен по http://IP:BITRIX_PORT 
+6. Вэб доступен по http://IP:BITRIX_PORT или https://IP:BITRIX_SSL_PORT
    
    
 
@@ -93,7 +99,7 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
      **далее заходить по домену**
 
-8. **Для доступа по FTP используется порт из .env** (https://github.com/delfer/docker-alpine-ftp-server)
+**Для доступа по FTP используется порт из .env** (https://github.com/delfer/docker-alpine-ftp-server)
    
    FTP использует волум без проброса
    
@@ -109,7 +115,7 @@ sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
 
    подлючение активное
 
-9. **Добавил webdav сервер**. По умолчанию доступен на порту 7000, логин bitrix, пароль 123456
+**Добавил webdav сервер**. По умолчанию доступен на порту 7000, логин bitrix, пароль 123456
    
    Работает на windows 10
    

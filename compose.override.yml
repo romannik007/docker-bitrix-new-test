@@ -18,6 +18,7 @@ services:
       volumes:
         - ${BITRIX_PATH:-./volumes/www/}:/var/www/html/bx-site/
     
+    
     #haproxy:
       #entrypoint: [ "/entrypoint.sh" ]
       
