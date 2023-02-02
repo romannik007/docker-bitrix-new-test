@@ -118,8 +118,6 @@ services:
       networks:
         - bitrix
   #          ipv4_address: 172.16.16.4
-      depends_on:
-        - web
       environment:
         USER_ID: ${USER_ID:-1000}
         USER_GID: ${USER_GID:-1000}
