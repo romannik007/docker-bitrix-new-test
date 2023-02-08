@@ -86,7 +86,7 @@ services:
         CLUSTER_JOIN: ${CLUSTER_JOIN:-}
         CLUSTER_NAME: ${CLUSTER_NAME:-bitrix-cluster}
         TZ: ${TZ:-Europe/Moscow}
-      command: ${MYSQL_COMMAND:-'--collation_server=utf8mb4_unicode_ci --transaction-isolation=READ-COMMITTED' '--innodb_strict_mode=OFF' '--character-set-server=utf8mb4' '--skip-character-set-client-handshake' '--sql-mode=' ' --innodb_flush_log_at_trx_commit=2' '--innodb_flush_method=O_DIRECT' '--transaction-isolation=READ-COMMITTED'}
+      command: ${MYSQL_COMMAND:-'--collation_server=utf8mb4_unicode_ci' '--transaction-isolation=READ-COMMITTED' '--innodb_strict_mode=OFF' '--character-set-server=utf8mb4' '--skip-character-set-client-handshake' '--sql-mode=' ' --innodb_flush_log_at_trx_commit=2' '--innodb_flush_method=O_DIRECT' '--transaction-isolation=READ-COMMITTED'}
     
     web:
       <<: *php-config
