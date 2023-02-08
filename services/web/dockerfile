@@ -30,9 +30,10 @@ ENV TZ=$TZ
           cd /opt/cprocsp/src/phpcades && \
           patch -p0 < ./php_support.patch && \
           cd /opt/cprocsp/src/phpcades && eval `/opt/cprocsp/src/doxygen/CSP/../setenv.sh --64`; make -f Makefile.unix && \
-          ln -s /opt/cprocsp/src/phpcades/libphpcades.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/libphpcades.so
+          ls -al /usr/local/lib/php/extensions && \
+          ln -s /opt/cprocsp/src/phpcades/libphpcades.so /usr/local/lib/php/extensions/libphpcades.so
      RUN  ldconfig && \
-          echo extension=libphpcades.so > /usr/local/etc/php/conf.d/php_cades.ini && \
+          echo extension=/usr/local/lib/php/extensions/libphpcades.so > /usr/local/etc/php/conf.d/php_cades.ini && \
           rm -rf /php-${PHP_VERSION} /php-${PHP_VERSION}.tar.gz /linux-amd64_deb && \
           a2enmod * -q || true && \
           a2dismod dav_fs dav dav_lock -q || true; \
