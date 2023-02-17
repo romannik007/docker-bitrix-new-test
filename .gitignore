@@ -15,6 +15,6 @@ tmp.Dockerfile
 bitrixsetup.php
 restore.php
 .env
-*.yml
+/*.yml
 !/win.yml
 !/compose.yml
