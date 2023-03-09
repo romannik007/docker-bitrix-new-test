@@ -3,7 +3,6 @@
 /volumes/www*
 !/volumes/www/.gitignore
 /volumes/mysql*/*
-!/volumes/mysql/.gitignore
 /services/push/logs/*
 !/services/push/logs/.gitkeep
 /services/web/logs/*
