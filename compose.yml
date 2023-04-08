@@ -21,7 +21,7 @@ x-php-config: &php-config
         - push_pub
         - push_sub
       volumes:
-        - ${BITRIX_PATH:-/volumes/www/}:/var/www/html/bx-site/
+        - ${BITRIX_PATH:-./volumes/www/}:/var/www/html/bx-site/
         - ${LOGS_PATH:-./services}/web/logs/xdebug:/var/log/xdebug
         - ${LOGS_PATH:-./services}/web/logs/php:/var/log/php
         - ./services/web/php.d/config/zx-bitrix.ini:/usr/local/etc/php/conf.d/zx-bitrix.ini
@@ -127,7 +127,7 @@ services:
       depends_on:
         - nginx
       volumes:
-        - ./services/web/nginx/proxy/nginx.conf:/etc/nginx/templates/default.conf.template     
+        - ./services/web/nginx/proxy/nginx.conf:/etc/nginx/templates/default.conf.template
         - ./services/web/nginx/proxy/maps.conf:/etc/nginx/conf.d/maps.conf
         - ./services/web/nginx/proxy/upstreams.conf:/etc/nginx/conf.d/upstreams.conf
         # ./services/web/nginx/proxy/im_subscrider.conf:/etc/nginx/conf.d/im_subscrider.conf
