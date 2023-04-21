@@ -12,16 +12,16 @@ ENV TZ=$TZ
          mysqli opcache pdo pdo_mysql pcntl pgsql pdo_pgsql pcov soap sqlite3 swoole redis readline xml zip memcache sockets gd xdebug-3.1.1 zlib
      RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential wget git cmake unzip gcc libboost-dev libxml2-dev sqlite3 libsqlite3-dev
      ADD ./cryptopro/linux-amd64_deb.tgz /
-     ADD https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz /
      COPY ./cryptopro/install.sh /install.sh
      COPY entrypoint.sh /entrypoint.sh
-     RUN cd /linux-amd64_deb && \
+     RUN wget -P ~/ https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz && \
+         cd /linux-amd64_deb && \
         ./install.sh && \
         dpkg -i lsb-cprocsp-devel* \
         cprocsp-pki-cades* \
         cprocsp-pki-phpcades* \
         cprocsp-legacy-* && \
-        tar xvzf /php-${PHP_VERSION}.tar.gz -C / && \
+        tar xvzf ~/php-${PHP_VERSION}.tar.gz -C / && \
         cd /php-${PHP_VERSION} && \
         ./configure --prefix=/opt/php && \
         sed -i "s/PHPDIR=\/php/PHPDIR=\/php-${PHP_VERSION}/g" /opt/cprocsp/src/phpcades/Makefile.unix && \
@@ -34,7 +34,7 @@ ENV TZ=$TZ
           ln -s /opt/cprocsp/src/phpcades/libphpcades.so /usr/local/lib/php/extensions/libphpcades.so
      RUN  ldconfig && \
           echo extension=/usr/local/lib/php/extensions/libphpcades.so > /usr/local/etc/php/conf.d/php_cades.ini && \
-          rm -rf /php-${PHP_VERSION} /php-${PHP_VERSION}.tar.gz /linux-amd64_deb && \
+          rm -rf /php-${PHP_VERSION} ~/php-${PHP_VERSION}.tar.gz /linux-amd64_deb && \
           a2enmod * -q || true && \
           a2dismod dav_fs dav dav_lock -q || true; \
           ln -f -s /usr/share/zoneinfo/$TZ /etc/localtime && \
